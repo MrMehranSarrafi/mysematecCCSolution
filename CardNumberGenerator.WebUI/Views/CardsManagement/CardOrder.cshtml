@@ -1,0 +1,34 @@
+﻿@model CardOrder
+@{
+    Layout = "_LayoutNew";
+    ViewBag.PageTitle = "   سفارش کارت  ";
+}
+<div class="row">
+    <div class="col6">
+        <div class="form-group">
+            <label label-for="Tedad" class="control-label"> تعداد کارت</label>
+            <input type="number" name="Tedad" id="Tedad" class="form-control" />
+            @* <span asp-validation-for="Tedad" class="text-danger"></span> *@
+        </div>
+    </div>
+    <div class="col6">
+        <div class="form-group">
+            <label label-for="CompanyID" class="control-label"> کد شرکت</label>
+            <input type="text" name="CompanyID" id="CompanyID" class="form-control" />
+            @* <span asp-validation-for="CompanyID" class="text-danger"></span> *@
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <label label-for="Amount" class="control-label"> مبلغ   </label>
+        <input type="number" name="Amount" id="Amount" class="form-control" />
+        @* <span asp-validation-for="Amount" class="text-danger"></span> *@
+    </div>
+</div>
+<div class="row">
+    <div class="form-group mt-3 col">
+        <button type="submit" class="btn btn-primary">ّبازگشت</button>
+        <button type="button" class="btn btn-secondary" onclick="history.back()">لغو</button>
+    </div>
+</div>

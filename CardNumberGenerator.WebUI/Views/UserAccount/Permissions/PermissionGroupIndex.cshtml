@@ -1,0 +1,99 @@
+﻿@model IEnumerable<Permissiongroup>
+@{
+    Layout = "_LayoutNew";
+    ViewBag.PageTitle = "گروه مجوزها";
+    ViewData["Title"] = "گروه مجوزها";
+}
+@section Footer {
+    @await Html.PartialAsync("layout/TableScripts")
+
+}
+@section HeaderUpLeftIcons {
+
+    <a href="@Url.Action("PermissionGroupCreate")" class="icon circle-icon glyphicon glyphicon-plus" data-toggle="tooltip" data-placement="bottom" title="افزودن گروه مجوزهای جدید"></a>
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 ">
+
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped ">
+                    <thead class="table-dark text-center">
+                        <tr>
+                            <th></th>
+                            <th>نام</th>
+                            <th>توضیحات</th>
+                            <th ></th>
+                           
+                        </tr>
+                    </thead>
+                    <tbody id="tbody">
+                        @foreach (var permissionGroup in Model)
+                        {
+                            <tr>
+                                <td>@permissionGroup.Id</td>
+                                <td>@permissionGroup.Name</td>
+                                <td>@permissionGroup.Description</td>
+
+                                <td style="min-width:120px; white-space: nowrap;">
+                                    <a asp-action="PermissionGroupEdit" asp-route-id="@permissionGroup.Id" class="btn btn-sm btn-warning">ویرایش</a>
+                                    |
+                                    @* <a href="/user/usergroup/details/1">جزئیات</a> | *@
+                                    <a asp-action="PermissiongroupPermissions" asp-route-permissionGroupId="@permissionGroup.Id" asp-route-permissiongroupName="@permissionGroup.Name">مجوزها</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <br />
+        <div class="col-xs-12">
+            <a asp-action="PermissionGroupCreate" class="btn btn-success">ایجاد جدید</a>
+            <a asp-action="IndexNew" asp-controller="Home" class="btn btn-secondary" style="background-color: aliceblue;">خانه</a>
+
+        </div>
+    </div>
+
+</div>
+@section Styles
+{
+    <style>
+        td, th {
+            width: 0;
+            min-width: fit-content;
+        }
+    </style>
+}
+@section Scripts
+{
+
+    <script>
+        $(document).ready(function() {
+            let searchUrl = '@Url.Action("Search", "UserAccount")';
+
+            $("#txtSearch").on("input", function () {
+                let searchValue = $(this).val().trim();
+                searchUsers(searchValue, searchUrl);
+            });
+
+             TableManageButtons.init();
+        });
+
+        function searchUsers(searchValue, searchUrl) {
+            debugger;
+            console.log(searchUrl);
+            $.get(searchUrl, { searchItems: searchValue }, function(users) {
+                $("#tbody").html(users);
+            })
+            .fail(function(xhr, status, error) {
+                console.log("Status: " + status);
+                console.log("Error: " + error);
+                console.log("Response: " + xhr.responseText);
+                alert("Error retrieving user data. Check console for details.");
+            });
+        }
+
+    </script>
+}

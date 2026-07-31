@@ -1,0 +1,114 @@
+﻿@*  <!-- نمایش پیام‌ها -->
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (TempData["WarningMessage"] != null)
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        @TempData["WarningMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (TempData["InfoMessage"] != null)
+{
+    <div class="alert alert-info alert-dismissible fade show" role="alert">
+        @TempData["InfoMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+<script>
+    $(document).ready(function() {
+        setTimeout(function() {
+            $('.alert').fadeOut('slow', function() {
+                $(this).remove();
+            });
+        }, 5000);
+    });
+</script> *@
+@{
+    var success = TempData["SuccessMessage"] as string;
+    var error = TempData["ErrorMessage"] as string;
+    var warning = TempData["WarningMessage"] as string;
+    var info = TempData["InfoMessage"] as string;
+}
+
+@if (!string.IsNullOrEmpty(success))
+{
+    <div class="alert alert-success alert-dismissable" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <i class="glyphicon glyphicon-ok-circle me-2"></i> @success
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(error))
+{
+    <div class="alert alert-danger alert-dismissable" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <i class="glyphicon glyphicon-exclamation-sign me-2"></i> @error
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(warning))
+{
+    <div class="alert alert-warning alert-dismissable" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <i class="glyphicon glyphicon-warning-sign me-2"></i> @warning
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(info))
+{
+    <div class="alert alert-info alert-dismissable" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <i class="glyphicon glyphicon-info-sign me-2"></i> @info
+    </div>
+}
+
+@*bootstrap is dependant on jquery : so Error *@
+@* <script defer>
+    $(window).on('load', function() {
+        setTimeout(function() {
+            $('.alert').fadeOut('slow', function() {
+                $(this).remove();
+            });
+        }, 4000);
+    });
+</script> *@
+
+<script>
+    // بدون jQuery - با Vanilla JavaScript
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function() {
+            var alerts = document.querySelectorAll('.alert');
+            alerts.forEach(function(alert) {
+                alert.style.transition = 'opacity 0.5s';
+                alert.style.opacity = '0';
+                setTimeout(function() {
+                    alert.remove();
+                }, 500);
+            });
+        }, 5000);
+    });
+</script>

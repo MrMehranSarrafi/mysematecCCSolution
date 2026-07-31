@@ -1,0 +1,196 @@
+﻿@* //@model IEnumerable<Card> *@
+@{
+    Layout = "_LayoutNew";
+    ViewBag.PageTitle = "      جستجوی کارت ها  ";
+}
+<div class="row " style="margin-bottom:3px;">
+    <div class="col-xs-3">
+        <input type="text" id="txtCardNo" class="form-control" placeholder="شماره کارت" />
+    </div>
+    <div class="col-xs-3">
+        <input type="text" id="txtSerial" class="form-control" placeholder="سریال کارت" />
+    </div>
+
+    <div class="col-xs-3">
+
+        <!-- صفت type="button" را اضافه کنید -->
+        <button id="btnSearch" type="button" class="btn btn-primary w-100">جستجو</button>
+    </div>
+</div>
+<div class="row " style="margin-bottom:3px;">
+
+    <div class="col-xs-6">
+        @*  <div class="form-group"> *@
+        <label for="CompanyId" class="control-label"> شرکت</label>
+
+        <select id="CompanyId" name="CompanyId"
+                asp-items="ViewBag.Companies"
+                class="form-select">
+            <option value="">انتخاب کنید</option>
+        </select>
+
+    </div>
+</div>
+
+<div class="row mb-3">
+    <div class="col-xs-6">
+        <div class="form-group">
+            <label for="OrganizationId" class="control-label">سازمان</label>
+            <select id="OrganizationId" name="OrganizationId"
+                    asp-items="ViewBag.Organizations"
+                    class="form-select"
+                    placehoder="سازمان">
+                <option value="">انتخاب کنید</option>
+            </select>
+        </div>
+    </div>
+</div>
+<div class="table-responsive">
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>شماره کارت</th>
+                <th>سریال</th>
+                <th> شرکت</th>
+                <th> سازمان</th>
+                <th>مبلغ</th>
+                <th>مانده</th>
+                <th>شماره سفارش کارت</th>
+            </tr>
+        </thead>
+        <tbody id="cardsBody">
+            @* نتایج اینجا با PartialView لود می‌شود *@
+        </tbody>
+    </table>
+</div>
+
+@section Styles {
+    <link href="~/css/tom-select.css" rel="stylesheet" />
+    <style>
+
+        .table tbody tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .table tbody tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+    </style>
+}
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    <script src="~/js/tom-select.complete.min.js" defer></script>
+
+    <script>
+        window.addEventListener("DOMContentLoaded", function () {
+            const company = new TomSelect("#CompanyId", {
+                create: false,
+                allowEmptyOption: true,
+                placeholder: "جستجو و انتخاب شرکت...",
+                maxOptions: 1000
+
+            });
+            const organization = new TomSelect("#OrganizationId", {
+                create: false,
+                allowEmptyOption: true,
+                placeholder: "جستجو و انتخاب سازمان...",
+                 maxOptions: 1000
+            });
+
+            const selectCompany = document.getElementById("CompanyId");
+            //const textboxCompanyCode = document.getElementById("CompanyCode");
+
+            function updateCompanyCode() {
+                // فرض بر اینکه کد شرکت داخل داده‌های گزینه است
+                // اگر گزینه‌ها دارای data-company-code هستند:
+                const selectedOption = selectCompany.options[selectCompany.selectedIndex];
+                //textboxCompanyCode.value = selectedOption.getAttribute('data-company-code') || "";
+            }
+
+            // اگر قصد دارید کد شرکت را هنگام تغییر به‌روزرسانی کنید:
+            selectCompany.addEventListener("change", updateCompanyCode);
+            // مقدار اولیه:
+            updateCompanyCode();
+
+            // لودینگ
+            let loadingIndicator = document.createElement('div');
+            loadingIndicator.innerHTML = 'در حال بارگذاری...';
+            loadingIndicator.id = 'loadingIndicator';
+            loadingIndicator.style.position = 'fixed';
+            loadingIndicator.style.top = '50%';
+            loadingIndicator.style.left = '50%';
+            loadingIndicator.style.transform = 'translate(-50%, -50%)';
+            loadingIndicator.style.padding = '10px';
+            loadingIndicator.style.backgroundColor = 'rgba(0,0,0,0.8)';
+            loadingIndicator.style.color = 'white';
+            loadingIndicator.style.borderRadius = '5px';
+            loadingIndicator.style.display = 'none';
+
+            document.body.appendChild(loadingIndicator);
+
+            function showLoading() {
+                document.getElementById('loadingIndicator').style.display = 'block';
+            }
+            function hideLoading() {
+                document.getElementById('loadingIndicator').style.display = 'none';
+            }
+
+            document.getElementById("btnSearch").addEventListener("click", function(e) {
+                e.preventDefault();
+                //alert("دکمه کلیک شد!");
+                const cardNo = document.getElementById("txtCardNo").value.trim();
+                const serial = document.getElementById("txtSerial").value.trim();
+                const companyId = document.getElementById("CompanyId").value;
+                const orgId = document.getElementById("OrganizationId").value;
+
+                showLoading();
+
+                fetch('/CardsManagement/CardsListSearchCards', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams({
+                        CardNo: cardNo,
+                        Serial: serial,
+                        CompanyId: companyId,
+                        OrganizationId: orgId
+                    })
+                })
+                .then(res => {
+                    if (!res.ok) {
+                        throw new Error('خطا در دریافت اطلاعات');
+                    }
+                    return res.text();
+                })
+                .then(html => {
+                    document.getElementById("cardsBody").innerHTML = html;
+                    hideLoading();
+                })
+                .catch(error => {
+                    console.error('خطا:', error);
+                    alert('خطا در ارتباط با سرور');
+                    hideLoading();
+                });
+            });
+
+            document.getElementById("cardsBody").addEventListener("click", function (e) {
+
+                    const link = e.target.closest(".card-order-link");
+                    if (!link) return;
+
+                    e.preventDefault();
+
+                    const cardOrderId = link.dataset.cardorderid;
+                    const cardNo = document.getElementById("txtCardNo").value.trim();
+
+                    window.location.href =
+                        `/CardsManagement/CardOrderDetails?Id=${cardOrderId}&CardNo=${encodeURIComponent(cardNo)}`;
+            });
+
+        });
+
+
+    </script>
+}

@@ -1,0 +1,58 @@
+﻿@* @model IEnumerable<Card>
+
+@if (Model != null && Model.Any())
+{
+    foreach (var card in Model)
+    {
+        <tr>
+            <td>@card.CardNo</td>
+            <td>@card.SerialNo</td>
+            <td>@card.Company?.CompanyName - @card.Company?.CompanyCode</td>
+            <td>@card.Organization?.OrganizationName</td>
+            <td>@card.Amount</td>
+            <td>@card.RemainedAmount</td>
+            <td><a asp-action="CardOrderDetails" asp-route-id="@card.CardOrderId"> @card.CardOrderId</a></td>
+        </tr>
+    }
+}
+else
+{
+    <tr>
+        <td colspan="5" class="text-center text-muted">
+            نتیجه‌ای یافت نشد
+        </td>
+    </tr>
+}
+ *@
+@model IEnumerable<CardDisplayDto>
+
+@if (Model != null && Model.Any())
+{
+    foreach (var card in Model)
+    {
+        <tr>
+            <td>@card.CardNo</td>
+            <td>@card.SerialNo</td>
+            <td>@card.CompanyName - @card.CompanyCode</td>
+            <td>@card.OrganizationName</td>
+            <td>@card.Amount.ToString("0.###", System.Globalization.CultureInfo.InvariantCulture)</td>
+            <td>@card.RemainedAmount.ToString("0.###", System.Globalization.CultureInfo.InvariantCulture)</td>
+            @* <td><a asp-action="CardOrderDetails" asp-route-id="@card.CardOrderId"> @card.CardOrderId</a></td> *@
+            <td>
+                <a href="#"
+                   class="card-order-link"
+                   data-cardorderid="@card.CardOrderId">
+                   @card.CardOrderId
+                </a>
+            </td>
+        </tr>
+    }
+}
+else
+{
+    <tr>
+        <td colspan="7" class="text-center text-muted">
+            نتیجه‌ای یافت نشد
+        </td>
+    </tr>
+}

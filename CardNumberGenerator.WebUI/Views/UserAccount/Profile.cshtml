@@ -1,0 +1,106 @@
+﻿@using CardNoGenerator.WebUI
+@model CreateUserViewModel
+@{
+    Layout = "_LayoutNew";
+    ViewBag.PageTitle = "پروفایل کاربر";
+}
+@* <h1>مشاهده پروفایل کاربر</h1> *@
+
+<div class="container">
+    <input type="hidden" asp-for="CompanyId" />
+    <div class="form-group row">
+        <label asp-for="FirstName" class="col-sm-3 col-form-label font-weight-bold"></label>
+        <div class="col-sm-9">
+            <p class="form-control-plaintext">@Model.FirstName</p>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label asp-for="LastName" class="col-sm-3 col-form-label font-weight-bold"></label>
+        <div class="col-sm-9">
+            <p class="form-control-plaintext">@Model.LastName</p>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label asp-for="CompanyName" class="col-sm-3 col-form-label font-weight-bold"></label>
+        <div class="col-sm-9">
+            <p class="form-control-plaintext">@Model.CompanyName</p>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label asp-for="CompanyCode" class="col-sm-3 col-form-label font-weight-bold"></label>
+        <div class="col-sm-9">
+            <p class="form-control-plaintext">@Model.CompanyCode</p>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label asp-for="Telephone" class="col-sm-3 col-form-label font-weight-bold"></label>
+        <div class="col-sm-9">
+            <p class="form-control-plaintext">@Model.Telephone</p>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label asp-for="PhoneNumber" class="col-sm-3 col-form-label font-weight-bold"></label>
+        <div class="col-sm-9">
+            <p class="form-control-plaintext">@Model.PhoneNumber</p>
+        </div>
+    </div>
+
+    @* <div class="form-group row">
+        <label asp-for="UserName" class="col-sm-3 col-form-label font-weight-bold"></label>
+        <div class="col-sm-9">
+            <p class="form-control-plaintext">@Model.UserName</p>
+        </div>
+    </div> *@
+    <div class="form-group row">
+        <label asp-for="UserName" class="col-sm-3 col-form-label font-weight-bold"></label>
+        <div class="col-sm-9">
+            <input class="form-control-plaintext" asp-for="UserName" disabled />
+            @* <p class="form-control-plaintext">@Model.UserName</p> *@
+        </div>
+    </div>
+
+
+    <div class="form-group row">
+        <label asp-for="Email" class="col-sm-3 col-form-label font-weight-bold"></label>
+        <div class="col-sm-9">
+            <p class="form-control-plaintext">@Model.Email</p>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label asp-for="Description" class="col-sm-3 col-form-label font-weight-bold"></label>
+        <div class="col-sm-9">
+            <p class="form-control-plaintext">@Model.Description</p>
+        </div>
+    </div>
+
+    <div class="form-group row mt-4">
+        <div class="col-sm-9 offset-sm-3">
+            @if (User.HasPermission(UserPermissionsEnum.UserAccountEdit))
+            {
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-lg btn-warning" style="height: 32px; line-height: 9px; padding: 0 12px; text-align: center;"> ویرایش </a>
+            }
+            @if (User.HasPermission(UserPermissionsEnum.UserAccountList))
+            {
+                <a asp-action="Index" class="btn btn-primary">لیست کاربران</a>
+
+            }
+            <button type="button" class="btn btn-secondary" onclick="history.back()">بازگشت</button>
+        </div>
+    </div>
+</div>
+@section Styles {
+    <style>
+        div p, input {
+            /* background-color:darkgray; */
+            border-right: 1px solid darkgray; /* ضخامت، نوع و رنگ */
+            padding-right: 15px; /* فاصله داخلی سمت راست */
+            margin-right: 15px; /* فاصله خارجی سمت راست (اختیاری) */
+        }
+    </style>
+}

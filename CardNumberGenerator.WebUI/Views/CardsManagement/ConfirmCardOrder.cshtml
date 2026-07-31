@@ -1,0 +1,108 @@
+﻿@model CardOrder
+@{
+    Layout = "_LayoutNew";
+    ViewBag.PageTitle = "  تایید سفارش کارت  ";
+}
+
+
+<form asp-action="ConfirmCardOrder" method="post" asp-antiforgery="true">
+    <input type="hidden" name="Id" id="Id" value="@Model.Id" />
+    <input type="hidden" name="companyId" id="Id" value="@Model.CompanyId" />
+    <h1> شما در حال تایید سفارش کارت با مشخصات زیر می باشید. آیا ادامه می دهید؟</h1>
+
+    <div class="row" style="margin-top:3px;">
+
+        <div class=" col-xs-6">
+            <!-- نمایش نام شرکت -->
+            <div class="form-group">
+                <label class="control-label">نام شرکت</label>
+                <input class="form-control" asp-for="@Model.CompanyName" readonly />
+
+            </div>
+        </div>
+        <div class=" col-xs-6">
+            <!-- نمایش کد شرکت -->
+            <div class="form-group">
+                <label class="control-label">کد شرکت</label>
+                <input class="form-control" asp-for="@Model.CompanyCode" readonly />
+            </div>
+        </div>
+    </div>
+    <div class="row" style="margin-top:3px;">
+        <div class=" col-xs-6">
+            <div class="form-group">
+                <label asp-for="Tedad" class="control-label">تعداد</label>
+                <input asp-for="Tedad" class="form-control" readonly />
+            </div>
+        </div>
+        <div class=" col-xs-6">
+            <div class="form-group">
+                <label asp-for="Amount" class="control-label">مبلغ</label>
+                <input asp-for="Amount" value="@Model.Amount.ToString("0.###", System.Globalization.CultureInfo.InvariantCulture)" class="form-control" readonly />
+            </div>
+        </div>
+    </div>
+    <div class="row" style="margin-top:3px;">
+        <div class=" col-xs-6">
+            <div class="form-group">
+
+                <label asp-for="OrganizationId" class="control-label"> سازمان   </label>
+                <select asp-for="OrganizationId"
+                        asp-items="ViewBag.Organizations"
+                        class="form-control" disabled>
+                    <option value="">انتخاب کنید</option>
+                </select>
+            </div>
+
+        </div>
+        <div class=" col-xs-6">
+            <div class="form-group">
+                <label asp-for="Status" class="control-label">حالت</label><br />
+                <select asp-for="Status" class="form-select" asp-items="Html.GetEnumSelectList<CardOrderStatus>()" disabled>
+                </select>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ردیف سوم: تاریخ انقضا -->
+    <div class="row" style="margin-top:3px;">
+        <div class="col-xs-12">
+            <div class="form-group" style="margin-top: 3px;">
+                <div class="d-flex align-items-center" style="display: flex; align-items: center;">
+                    <div style="display: flex; align-items: center; margin-left: 15px;">
+                        <input asp-for="WillExpire" type="checkbox" class="form-check-input" id="WillExpire" disabled/>
+                        <label asp-for="WillExpire" class="form-check-label ms-2 mb-0" style="margin-right: 5px; margin-bottom: 0;" disabled>
+                            دارای تاریخ انقضا می باشد
+                        </label>
+                    </div>
+                    <div style="display: flex; align-items: center;">
+                        <input asp-for="ExpireDayNumber" type="number" class="form-control" id="ExpireDayNumber"
+                               style="width: 80px; margin-left: 5px;" disabled/>
+                        <span style="font-weight: bold; margin-right: 5px;">روز</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="margin-top:3px;">
+        <div class="col-xs-12">
+            <label asp-for="Description" class="control-label">توضیحات</label>
+            <textarea asp-for="Description" class="form-control" readonly></textarea>
+        </div>
+    </div>
+    <div class="row" style="margin-top:3px;">
+        <div class="col-xs-12"  >
+            <button type="submit" class="btn btn-primary">بله تایید شود</button>
+            <button type="button" class="btn btn-secondary" onclick="history.back()"> خیر، بازگشت</button>
+        </div>
+    </div>
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+</form>
+
+
+
+
+
+

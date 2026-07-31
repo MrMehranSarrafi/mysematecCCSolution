@@ -1,0 +1,65 @@
+﻿@model Permissiongroup
+@{
+    ViewData["Title"] = "ایجاد گروه مجوز های جدید"; 
+    Layout = "_LayoutNew";
+    ViewBag.PageTitle = "ایجاد گروه مجوز های جدید";
+}
+
+@section HeaderUpLeftIcons {
+    <a onclick="history.back()" class="icon circle-icon glyphicon glyphicon-arrow-left" data-toggle="tooltip" data-placement="bottom" title="بازگشت"></a>
+}
+<form asp-action="PermissionGroupCreate" method="post" asp-antiforgery="true">
+    <div class="form-group">
+        <label asp-for="Name" class="control-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description" class="control-label"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+ 
+     
+
+    <div class="form-group " style="margin-top:3px;">
+        <button type="submit" class="btn btn-primary">ایجاد گروه مجوزها</button> 
+        
+        <a asp-action="PermissionGroupIndex" class="btn btn-secondary" style="background: aliceblue;">لیست گروه مجوزها</a>
+        <button type="button" class="btn btn-secondary" onclick="history.back()">بازگشت</button>
+    </div>
+
+    <div asp-validation-summary="All" class="text-danger"></div>
+</form>
+@section Styles {
+    <link href="~/css/tom-select.css" rel="stylesheet">
+    <style>
+        .required:after {
+            content: " *";
+            color: #dc3545;
+        }
+       
+    </style>
+}
+ 
+@section Scripts {
+    
+        @await Html.PartialAsync("_ValidationScriptsPartial")
+        
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            
+
+           
+            
+        });
+        document.ready(function(){
+              
+        });
+    </script>
+     
+     
+}

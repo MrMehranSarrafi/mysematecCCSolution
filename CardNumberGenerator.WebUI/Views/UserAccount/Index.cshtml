@@ -1,0 +1,159 @@
+﻿@model IEnumerable<EditUserDto>
+
+@{
+    // Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "مدیریت کاربران";
+    bool IsAdmin = ViewBag.IsAdmin;
+    Layout = "_LayoutNew";
+    ViewBag.PageTitle = "کاربران";
+}
+@section Footer {
+    @await Html.PartialAsync("layout/TableScripts")
+
+}
+@section HeaderUpLeftIcons {
+    @if (User.HasPermission(UserPermissionsEnum.UserAccountNew))
+    {
+
+        <a href="@Url.Action("create")" class="icon circle-icon glyphicon glyphicon-plus" data-toggle="tooltip" data-placement="bottom" title="افزودن کاربر جدید"></a>
+    }
+}
+
+<div class="container">
+
+    <div id="messageDiv">
+        @if (TempData["Message"] != null)
+        {
+            <h2>@TempData["Message"]</h2>
+        }
+    </div>
+
+    <div id="Search" class="mb-3">
+        جستجو :
+        <input type="text" id="txtSearch" style="margin-bottom: 15px;" />
+
+    </div>
+    <div class="row">
+        <div class="col-xs-12 ">
+
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped ">
+                    <thead class="table-dark text-center">
+                        <tr>
+                            <th>ID</th>
+                            <th>نام</th>
+                            <th>نام خانوادگی</th>
+                            <th>نام شرکت</th>
+                            <th>کد شرکت</th>
+                            <th>تلفن</th>
+                            <th>موبایل</th>
+                            <th>نام کاربری</th>
+                            <th>ایمیل</th>
+                            <th style="width: 200px;">عملیات</th>
+                            <th style="width: 160px;">عملیات دسترسی</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody">
+                        @foreach (var user in Model)
+                        {
+                            <tr>
+                                <td>@user.Id</td>
+                                <td>@user.FirstName</td>
+                                <td>@user.LastName</td>
+                                <td>@user.CompanyName</td>
+                                <td>@user.CompanyCode</td>
+                                <td>@user.Telephone</td>
+                                <td>@user.PhoneNumber</td>
+                                <td>@user.UserName</td>
+                                <td>@user.Email</td>
+                                <td style="min-width:120px; white-space: nowrap;">
+                                    @if (User.HasPermission(UserPermissionsEnum.UserAccountEdit))
+                                    {
+                                        <a asp-action="Edit" asp-route-id="@user.Id" class="btn btn-sm btn-warning">ویرایش</a>
+                                    }
+                                    <a asp-action="ChangePassword" asp-route-id="@user.Id" asp-route-username="@user.UserName" class="btn btn-sm btn-info">تغییر رمز</a>
+
+                                    @if (user.Id != 1)
+                                    {
+                                        if (user.IsActive == true)
+                                        {
+                                            <a asp-action="DisableUser" asp-route-id="@user.Id" class="btn btn-sm btn-danger" onclick="return confirm('آیا از غیرفعال کردن این کاربر اطمینان دارید؟');">غیرفعال کردن</a>
+                                        }
+                                        else
+                                        {
+                                            <a asp-action="EnableUser" asp-route-id="@user.Id" class="btn btn-sm btn-success" onclick="return confirm('آیا از فعال کردن این کاربر اطمینان دارید؟');">فعال کردن</a>
+                                        }
+                                    }
+                                </td>
+                                @if (User.HasPermission(UserPermissionsEnum.UserAccountPermissions))
+                                {
+                                    <td style="min-width:160px; white-space: nowrap;">
+                                        <a asp-action="UserPermissions" asp-route-userId="@user.Id" asp-route-username="@user.UserName" class="btn btn-default">مجوز ها</a> |
+                                        @if (IsAdmin==true)
+                                        {
+                                        <a asp-action="UserPermissiongroups" asp-route-userId="@user.Id" asp-route-username="@user.UserName" class="btn btn-default">گروه مجوز ها</a>
+                                            
+                                        }
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <br />
+        <div class="col-xs-12">
+            @if (User.HasPermission(UserPermissionsEnum.UserAccountNew))
+            {
+                <a asp-action="Create" class="btn btn-success">ایجاد جدید</a>
+            }
+
+            <a asp-action="IndexNew" asp-controller="Home" class="btn btn-secondary" style="background-color: aliceblue;">خانه</a>
+
+        </div>
+    </div>
+
+</div>
+@section Styles
+{
+    <style>
+        td, th {
+            width: 0;
+            min-width: fit-content;
+        }
+    </style>
+}
+@section Scripts
+{
+
+    <script>
+        $(document).ready(function() {
+            let searchUrl = '@Url.Action("Search", "UserAccount")';
+
+            $("#txtSearch").on("input", function () {
+                let searchValue = $(this).val().trim();
+                searchUsers(searchValue, searchUrl);
+            });
+
+             TableManageButtons.init();
+        });
+
+        function searchUsers(searchValue, searchUrl) {
+            debugger;
+            console.log(searchUrl);
+            $.get(searchUrl, { searchItems: searchValue }, function(users) {
+                $("#tbody").html(users);
+            })
+            .fail(function(xhr, status, error) {
+                console.log("Status: " + status);
+                console.log("Error: " + error);
+                console.log("Response: " + xhr.responseText);
+                alert("Error retrieving user data. Check console for details.");
+            });
+        }
+
+    </script>
+}
+
+@* ${encodeURIComponent(u.userName)} چون ممکن است کاراکتر خاص داشته باشد *@

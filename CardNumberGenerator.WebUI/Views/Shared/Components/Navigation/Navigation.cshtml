@@ -1,0 +1,83 @@
+﻿@model IEnumerable<Menu>
+
+
+<div id="sidebar-menu">
+    <ul>
+        <li class="text-muted menu-title">پنل برنامه</li>
+        @foreach (Menu menu in Model)
+        {
+            if (menu.Children.Count == 0)
+            {
+                <li>
+                    <a href="@Url.Action(menu.Action, menu.Controller)" class="waves-effect">
+                        @if (menu.Name == "Home")
+                        {
+                            <i class="fa fa-tachometer" aria-hidden="true"></i>
+
+                        }
+                        else if (menu.Name == "CardOrderDetailsView")
+                        {
+                            <i class="fa fa-search" aria-hidden="true"></i>
+                        }
+                        <span> @menu.Label </span>
+                    </a>
+                </li>
+
+            }
+
+            else
+            {
+
+                <li class="has_sub" parent-menu="@menu.Name">
+                    <a class="waves-effect">
+                        @if(menu.Name=="UserAccount")
+                        {
+                            <i class="fa fa-user" aria-hidden="true"></i>
+                        }
+                        else if(menu.Name=="Person")
+                        {
+                            <i class="fa fa-users" aria-hidden="true"></i>
+                        }
+                        else if (menu.Name == "Company")
+                        {
+                           <i class="fa fa-building"></i>      <!-- پیشنهاد اول -->
+                            
+                        }
+                        else if (menu.Name == "Organization")
+                        {
+                            
+                              <i class="fa fa-university"></i>    <!-- اگر سازمان‌های رسمی هستند -->
+                            
+                        }
+                        else if (menu.Name == "CardOrder")
+                        {
+                            <i class="fa fa-credit-card"></i>   <!-- پیشنهاد اول -->
+                            
+                        }
+                        <span>@menu.Label</span>
+                        <span class="menu-arrow"></span>
+                    </a>
+
+                    @* ✅ یک بار <ul> را ایجاد کنید *@
+                    <ul class="list-unstyled">
+                        @foreach (Menu submenu in menu.Children)
+                        {
+                            <li selected-menu="@submenu.Name">
+                                <a href="@Url.Action(submenu.Action, submenu.Controller, new { area = "" })">
+                                    @submenu.Label
+                                </a>
+                            </li>
+
+                        }
+                    </ul>
+                </li>
+            }
+
+        }
+
+
+
+
+    </ul>
+    <div class="clearfix"></div>
+</div>

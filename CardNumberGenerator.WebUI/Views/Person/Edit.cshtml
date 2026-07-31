@@ -1,0 +1,119 @@
+﻿@model PersonVM
+@{
+    Layout = "_LayoutNew";
+    ViewBag.PageTitle = "ویرایش اطلاعات شخص";
+}
+@* <h1>  ویرایش اطلاعات شخص  </h1> *@
+<form asp-action="Edit" method="post" asp-antiforgery="true">
+    <input type="hidden" asp-for="Id" />
+    @* <input type="hidden" asp-for="@ViewBag.returnUrl"  خطاست/> *@
+    <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
+    <div class="form-group">
+        <label asp-for="FirstName" class="control-label"></label>
+        <input asp-for="FirstName" class="form-control" />
+        <span asp-validation-for="FirstName" class="text-danger"></span>
+    </div>
+    <div>
+        <label asp-for="LastName" class="control-label"></label>
+        <input asp-for="LastName" class="form-control" />
+        <span asp-validation-for="LastName" class="text-danger"></span>
+    </div>
+    <div>
+        <label asp-for="Mobile" class="control-label"></label>
+        <input asp-for="Mobile" class="form-control" oninput="this.value=this.value.replace(/[0-9]/g,d=>'0123456789'.indexOf(d)).replace(/[^0-9]/g,'')" />
+        <span asp-validation-for="Mobile" class="text-danger"></span>
+    </div>
+    <div>
+        <label asp-for="Phone" class="control-label"></label>
+        <input asp-for="Phone" class="form-control" />
+        <span asp-validation-for="Phone" class="text-danger"></span>
+    </div>
+    <div>
+        <label asp-for="NationalCode" class="control-label"></label>
+        <input asp-for="NationalCode" class="form-control" />
+        <span asp-validation-for="NationalCode" class="text-danger"></span>
+    </div>
+    <div>
+        <label asp-for="JobPlace" class="control-label"></label>
+        <input asp-for="JobPlace" class="form-control" />
+        <span asp-validation-for="JobPlace" class="text-danger"></span>
+    </div>
+
+
+    <div class="form-group">
+        <label asp-for="BirthDateFa" class="control-label"></label>
+        <input asp-for="BirthDateFa" class="form-control" placeholder="1400/01/01" maxlength="10" oninput="
+               let v=this.value.replace(/[^0-9]/g,'');
+               if(v.length>4)v=v.slice(0,4)+'/'+v.slice(4);
+        if(v.length>7)v=v.slice(0,7)+'/'+v.slice(7,9);
+        this.value=v.slice(0,10);
+        " />
+        <span asp-validation-for="BirthDateFa" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="CompanyId" class="control-label"> شرکت</label>
+
+        <div class="row">
+            <!-- کمبو سمت راست -->
+            @* <div class="col-6"> *@
+            <div class="col">
+                <select asp-for="CompanyId"
+                        asp-items="ViewBag.Companies"
+                        class="form-select"
+                        id="CompanyId">
+                    @if (ViewBag.IsAdmin)
+                    {
+                        <option value="">انتخاب کنید</option>
+                    }
+                </select>
+            </div>
+
+            <!-- تکست‌باکس سمت چپ -->
+            @* <div class="col-6"> *@
+            <input type="hidden" class="form-control" id="CompanyCode" readonly />
+
+            @* </div> *@
+        </div>
+
+        <span asp-validation-for="CompanyId" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="GivId" class="control-label"></label>
+        <input asp-for="GivId" class="form-control" />
+        <span asp-validation-for="GivId" class="text-danger"></span>
+    </div>
+
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <button type="submit" class="btn btn-primary mt-2">ویرایش</button>
+
+</form>
+<a asp-action="Index" class="btn brn-secondary mt-2" style="background-color: darkgray;">لغو</a>
+@section Styles {
+    <link href="~/css/tom-select.css" rel="stylesheet">
+}
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+
+    <script src="~/js/tom-select.complete.min.js" defer></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            // --- TomSelect ها ---
+            const companySelect = new TomSelect("#CompanyId", {
+                create: false,
+                    placeholder: "جستجو و انتخاب شرکت...",
+                    maxOptions: 1000,
+                    allowEmptyOption: true
+            });
+        });
+    </script>
+}
+
+
+
+
+ 
+
+

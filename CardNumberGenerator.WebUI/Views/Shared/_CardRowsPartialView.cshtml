@@ -1,0 +1,115 @@
+﻿@model IEnumerable<Card>
+@using System.Globalization;
+@{
+    int radif = 1;
+}
+
+@foreach (Card card in Model)
+{
+    <tr data-id="@card.Id">
+        <td>@radif</td>
+        @{
+            radif = radif + 1;
+        }
+        <td>@card.CardNo</td>
+        <td>@card.SerialNo</td>
+        <td>@card.Amount.ToString("0.###", System.Globalization.CultureInfo.InvariantCulture)</td>
+        <td>@card.RemainedAmount.ToString("0.###", System.Globalization.CultureInfo.InvariantCulture)</td>
+        
+        @if (card.IsExpired)
+        {
+
+            <td class="bg-secondary ">@card.ExpireDateFa</td>
+
+        }
+        else
+        {
+            <td>@card.ExpireDateFa</td>
+        }
+        <td>
+            <div class="d-flex justify-content-center">
+                <button type="button"
+                        class="btn btn-primary btn-sm"
+                        onclick="showModalSetExpireDate(@card.Id)">
+                    تاریخ انقضا
+                </button>
+            </div>
+        </td>
+        <!-- مشاهده تراکنش -->
+        <td>
+            <div class="d-flex justify-content-center">
+                <button type="button"
+                        class="btn btn-primary btn-sm"
+                        onclick="ViewCardTransactions(@card.Id)">
+                    مشاهده تراکنش‌ها
+                </button>
+            </div>
+        </td>
+        <!-- فعال / غیرفعال -->
+        <td>
+            <div class="d-flex align-items-center justify-content-center gap-2">
+                @if (card.IsActive)
+                {
+                    <button type="button"
+                            class="btn btn-danger btn-sm"
+                            onclick="DisableCard(@card.Id)">
+                        غیرفعال کردن
+                    </button>
+                    <span class="badge bg-success">
+                        فعال
+                    </span>
+                }
+                else
+                {
+                    <button type="button"
+                            class="btn btn-primary btn-sm"
+                            onclick="EnableCard(@card.Id)">
+                        فعال کردن
+                    </button>
+                    <span class="badge bg-secondary">
+                        غیرفعال
+                    </span>
+                }
+            </div>
+        </td>
+        <!-- تعیین مالک -->
+        <td>
+            <div class="d-flex justify-content-center">
+                @if (card.OwnerPersonId == null)
+                {
+                    <button type="button"
+                            class="btn btn-info btn-sm"
+                            onclick="showSetCardOwnerModal(@card.Id)">
+                        تعیین مالک
+                    </button>
+                }
+                else
+                {
+                    <a asp-action="Details" asp-controller="Person" asp-route-personId="@card.OwnerPersonId" asp-route-returnUrl="@Url.Action("CardOrderDetails","CardsManagement", new { area =""})">
+                        <text>@card.Owner?.FirstName   @card.Owner?.LastName</text>
+                    </a>
+                }
+            </div>
+        </td>
+        <!-- افزایش اعتبار -->
+        <td>
+            <button type="button"
+                    class="btn btn-info btn-sm"
+                    onclick="  showIncreaseCardCreditModal(@card.Id,String( @card.CardNo).padStart(16,'0') )">
+                افزایش اعتبار
+            </button>
+        </td>
+        <!-- کاهش اعتبار -->
+        <td>
+            <button type="button"
+                    class="btn btn-info btn-sm"
+                    onclick="  showDecreaseCardCreditModal(@card.Id,String( @card.CardNo).padStart(16,'0') )">
+                کاهش اعتبار
+            </button>
+        </td>
+    </tr>
+}
+
+ 
+   
+ 

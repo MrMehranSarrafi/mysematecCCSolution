@@ -1,0 +1,108 @@
+﻿@model IEnumerable<Company>
+@{
+    // Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "شرکت";
+}
+@{
+    Layout = "_LayoutNew";
+    ViewBag.PageTitle = " شرکت ها ";
+}
+<div class="container">
+    @*  <h2 class="mb-4">لیست شرکت ها</h2> *@
+    <div id="messageDiv">
+        @if (TempData["Message"] != null)
+        {
+            <h2>@TempData["Message"]</h2>
+        }
+    </div>
+    <div id="Search">
+        جستجو:   <input type="text" id="txtSearch" style="margin-block:3px; width:90%; border-radius:10px; outline:none;" />
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <table class="table table-bordered table-striped table-responsive">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ردیف</th>
+                        <th>نام شرکت</th>
+                        <th>کد شرکت</th>
+                        <th style="width: 180px;">عملیات</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody">
+                    @foreach (var company in Model)
+                    {
+                        <tr>
+                            <td>@company.RowNo</td>
+                            <td>@company.CompanyName</td>
+                            <td>@company.CompanyCode</td>
+                            <td colspan="3">
+                                @if (User.HasPermission(UserPermissionsEnum.CompanyEdit))
+                                {
+                                    <a asp-action="Edit" asp-route-Id="@company.Id" class="btn btn-sm btn-warning">ویرایش</a>
+                                    
+                                }
+
+                                
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="col-xs-12">
+            <br />
+            @if (User.HasPermission(UserPermissionsEnum.CompanyNew))
+            {
+                <a asp-action="Create" class="btn btn-success">جدید</a>
+            }
+
+            <a asp-action="IndexNew" asp-controller="Home" class="btn btn-secondary" style="background-color: aliceblue;">خانه</a>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+@section Scripts
+{
+    <script>
+         // <partial name="_ValidationScriptsPartial" />
+         $(document).ready(function() {
+
+        });
+        $("#txtSearch").on("keydown", function (e) {
+            if (e.key === "Enter" ) { // کلید Enter
+                e.preventDefault(); // جلوگیری از submit فرم
+
+                var value = $(this).val();
+                $.get("/Company/Search", { searchItems: value })
+                    .done(function (data) {
+                        console.log(data);
+                        let str="";
+                        str = data.map(c => {
+                        return       `
+                                            <tr>
+                                                <td>${c.id}</td>
+                                                <td>${c.companyName}</td>
+                                                <td>${c.companyCode}</td>
+                                                <td colspan="3">
+                                                    <a href="/Company/Edit/${c.id}"  class="btn btn-sm btn-warning">ویرایش</a>
+                                                </td>
+                                            </tr>
+                                    `;
+                                            }).join("");
+
+                        $("#tbody").html(str);
+                    })
+                    .fail(function () {
+                        alert("خطا در دریافت اطلاعات");
+                    });
+            }
+        });
+
+    </script>
+}
+

@@ -1,0 +1,203 @@
+﻿@model PersonVM
+@{
+    ViewData["Title"] = "تعریف اشخاص";
+}
+@{
+    Layout = "_LayoutNew";
+    ViewBag.PageTitle = "شخص جدید";
+}
+
+@section HeaderUpLeftIcons {
+    <a onclick="history.back()" class="icon circle-icon glyphicon glyphicon-arrow-left" data-toggle="tooltip" data-placement="bottom" title="بازگشت"></a>
+}
+<form asp-action="Create" method="post" asp-antiforgery="true">
+    <div class="row">
+        <div class="col">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label required">  نام خانوادگی</label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <label asp-for="Mobile" class="control-label required">  شماره موبایل</label>
+                <input asp-for="Mobile" class="form-control" oninput="this.value=this.value.replace(/[^0-9]/g,'')" placeholder="09123456789" maxlength="11" inputmode="numeric" value="@ViewBag.MobileNO" />
+                <span asp-validation-for="Mobile" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label asp-for="Phone" class="control-label"></label>
+                <input asp-for="Phone" class="form-control"
+                       oninput="this.value=(v=>{v=v.replace(/[^0-9-]/g,'');let i=v.indexOf('-');return i<0?v:v.slice(0,i+1)+v.slice(i+1).replace(/-/g,'');})(this.value)" placeholder="021-33331385 یا 33331385" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <label asp-for="NationalCode" class="control-label"></label>
+                <input asp-for="NationalCode" class="form-control" oninput="this.value=this.value.replace(/[^0-9]/g,'')" maxlength="10" />
+                <span asp-validation-for="NationalCode" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label asp-for="BirthDateFa" class="control-label"></label>
+                <input asp-for="BirthDateFa" class="form-control" placeholder="1400/01/01" maxlength="10"
+                       oninput="FixFaDate(this)" />
+                @* v.slice(0,4)   // 4 کاراکتر اول
+        v.slice(4)     // از کاراکتر 5 به بعد *@
+                <span asp-validation-for="BirthDateFa" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <label asp-for="JobPlace" class="control-label"></label>
+                <input asp-for="JobPlace" class="form-control" />
+                <span asp-validation-for="JobPlace" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label asp-for="GivId" class="control-label required"></label>
+                <input asp-for="GivId" class="form-control" />
+                <span asp-validation-for="GivId" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CompanyId" class="control-label required">  شرکت</label>
+
+        <div class="row">
+            <!-- کمبو سمت راست -->
+            <div class="col-6">
+                <select asp-for="CompanyId"
+                        asp-items="ViewBag.Companies"
+                        class="form-select"
+                        id="CompanyId">
+
+                    @if (ViewBag.IsAdmin)
+                    {
+                        <option value="">انتخاب کنید</option>
+                    }
+
+                </select>
+            </div>
+
+
+        </div>
+
+        <span asp-validation-for="CompanyId" class="text-danger"></span>
+    </div>
+
+
+    <div class="form-group mt-3">
+        <button type="submit" class="btn btn-primary">ایجاد </button>
+        <a type="button" class="btn btn-secondary" asp-action="Index" asp-controller="Person" style="background-color: bisque;">لیست اشخاص</a>
+
+    </div>
+
+</form>
+@section Styles {
+    @*  <link rel="stylesheet" href="/css/timepicker.min.css"> *@
+    <link href="~/css/tom-select.css" rel="stylesheet">
+    <style>
+        .required::before {
+            content: " *";
+            /* color: #dc3545; */
+        }
+    </style>
+
+}
+@section Scripts
+{
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    @* <script src="~/js/timepicker.min.js"></script> *@
+    <script src="~/js/tom-select.complete.min.js" defer></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            // --- TomSelect ها ---
+            const companySelect = new TomSelect("#CompanyId", {
+                create: false,
+                placeholder: "جستجو و انتخاب شرکت...",
+                maxOptions: 1000,
+                allowEmptyOption: true
+            });
+
+
+
+        });
+        function FixFaDate(txtFaDate) {
+            var value = txtFaDate.value;
+            let v = value.replace(/[^0-9]/g, '');
+
+            // اضافه کردن / بعد از سال
+            if (v.length > 4)
+                v = v.slice(0, 4) + '/' + v.slice(4);
+
+            // بررسی ماه (01-12)
+            if (v.length > 5) {
+                let monthStr = v.slice(5, 7);
+                let month = parseInt(monthStr);
+
+                if (month > 12) {
+                    // اگر ماه بیشتر از 12 شد → تبدیل به 01
+                    v = v.slice(0, 5) + '01' + v.slice(7);
+                } else if (month > 0 && month <= 9 && monthStr.length === 2) {
+                    // اگر ماه یک رقمی بود (مثل 3) → تبدیل به 03
+                    v = v.slice(0, 5) + '0' + month + v.slice(7);
+                }
+            }
+
+            // اضافه کردن / بعد از ماه
+            if (v.length > 7)
+                v = v.slice(0, 7) + '/' + v.slice(7);
+
+            // بررسی رقم اول روز (position 8)
+            if (v.length > 8) {
+                let dayFirst = v.charAt(8);
+                if (dayFirst === '0' || dayFirst === '/') {
+                    // هیچ تغییری نده
+                } else if (dayFirst >= '1' && dayFirst <= '3') {
+                    // درسته
+                } else if (dayFirst >= '4' && dayFirst <= '9') {
+                    // تبدیل به 0
+                    v = v.slice(0, 8) + '0' + v.slice(9);
+                }
+            }
+
+            // بررسی رقم دوم روز (اگر بیشتر از 31 شد، حذف شود)
+            if (v.length > 9) {
+                let dayStr = v.slice(8, 10);
+                let day = parseInt(dayStr);
+                if (day > 31) {
+                    v = v.slice(0, 9);
+                }
+            }
+
+            txtFaDate.value = v.slice(0, 10);
+        }
+    </script>
+}

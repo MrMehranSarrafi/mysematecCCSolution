@@ -1,0 +1,217 @@
+﻿@using CardNoGenerator.Core
+@model CardOrder
+<!-- ✅ مقداردهی اولیه hidden field -->
+@{
+    Layout = "_LayoutNew";
+    ViewBag.PageTitle = " ایجاد سفارش کارت جدید ";
+}
+
+
+@{
+    string savedTedad = TempData["CardOrder_Tedad"]?.ToString() ?? "";
+    string savedCompanyId = TempData["CardOrder_CompanyId"]?.ToString() ?? "";
+    string savedAmount = TempData["CardOrder_Amount"]?.ToString() ?? "";
+}
+@{
+    var hasSetExpireDateFaPermission = User.HasPermission(UserPermissionsEnum.CardOrderSetAllCardsExpireDate);
+}
+@section HeaderUpLeftIcons {
+    <a onclick="history.back()" class="icon circle-icon glyphicon glyphicon-arrow-left" data-toggle="tooltip" data-placement="bottom" title="بازگشت"></a>
+}
+<form asp-action="CardOrderCreate" method="post" asp-antiforgery="true">
+    <!-- ردیف اول: تعداد کارت و شرکت -->
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="form-group">
+                <label asp-for="Tedad" class="form-label">تعداد کارت</label>
+                <input type="number" asp-for="Tedad" class="form-control" value="@savedTedad" />
+                <span asp-validation-for="Tedad" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <div class="form-group">
+                <label asp-for="CompanyId" class="control-label">شرکت</label>
+                <select class="form-select" asp-for="CompanyId" id="CompanyId">
+                    @if (ViewBag.IsAdmin)
+                    {
+                        <option value="">انتخاب کنید</option>
+                    }
+                    @foreach (var company in ViewBag.Companies)
+                    {
+                        var isSelected = company.Value == savedCompanyId?.ToString();
+                        <option value="@company.Value" selected="@isSelected">
+                            @company.Text
+                        </option>
+                    }
+                </select>
+                <span asp-validation-for="CompanyId" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ردیف دوم: مبلغ، سازمان و دکمه سبز + در یک سطر با همترازی پایین -->
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="form-group">
+                <label asp-for="Amount" class="control-label">مبلغ</label>
+                <input type="number" asp-for="Amount" class="form-control" value="@savedAmount" />
+                <span asp-validation-for="Amount" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-xs-5">
+            <div class="form-group">
+                <label asp-for="OrganizationId" class="control-label">سازمان</label>
+                <select asp-for="OrganizationId" class="form-select" id="OrganizationId" style="width:100%">
+                    <option value="">انتخاب کنید</option>
+                    @foreach (var org in ViewBag.Organizations)
+                    {
+                        var isSelected = org.Value == @TempData["SelectedOrganizationId"]?.ToString();
+                        <option value="@org.Value" selected="@isSelected">
+                            @org.Text
+                        </option>
+                    }
+                </select>
+                <span asp-validation-for="OrganizationId" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-xs-1">
+            <div class="form-group">
+                <!--visibility: hidden:
+                    عنصر دیده نمی‌شود.
+                ولی فضای آن در صفحه حفظ می‌شود.
+                -->
+                <label class="control-label " style="visibility: hidden;">&nbsp;</label>
+                @if (User.HasPermission(UserPermissionsEnum.OrganizationNew))
+                {
+                    <a id="btnAddOrg" class="btn btn-success btn-sm" style="display: inline-block; margin-top:30px;">+</a>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- ردیف سوم: تاریخ انقضا -->
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="form-group" style="margin-top: 3px;">
+                <div class="d-flex align-items-center" style="display: flex; align-items: center;">
+                    <div style="display: flex; align-items: center; margin-left: 15px;">
+                        @if (hasSetExpireDateFaPermission)
+                        {
+                            <input asp-for="WillExpire" type="checkbox" class="form-check-input" id="WillExpire" />
+
+                        }
+                        else
+                        {
+                            <input asp-for="WillExpire" type="checkbox" class="form-check-input" id="WillExpire" disabled />
+
+                        }
+                        <label asp-for="WillExpire" class="form-check-label ms-2 mb-0" style="margin-right: 5px; margin-bottom: 0;">
+                            دارای تاریخ انقضا می باشد
+                        </label>
+                    </div>
+                    <div style="display: flex; align-items: center;">
+                        <input asp-for="ExpireDayNumber" type="number" class="form-control" id="ExpireDayNumber"
+                               style="width: 80px; margin-left: 5px;" disabled />
+                        <span style="font-weight: bold; margin-right: 5px;">روز</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ردیف چهارم: توضیحات -->
+    <div class="row">
+        <div class="col-xs-12">
+            <label asp-for="Description" class="control-label">توضیحات</label>
+            <textarea asp-for="Description" class="form-control"></textarea>
+        </div>
+    </div>
+
+    <!-- ردیف پنجم: دکمه‌های اقدام -->
+    <div class="row">
+        <div class="col-xs-12" style="margin-block: 3px;">
+            <button type="submit" class="btn btn-primary">ایجاد شماره کارت</button>
+            <button type="button" class="btn btn-secondary" onclick="history.back()">بازگشت</button>
+        </div>
+    </div>
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+</form>
+
+@section Styles {
+    <link href="~/css/tom-select.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/assets/css/font-awesome4.7.0.min.css" asp-append-version="true" />
+
+    <style>
+        /* تنظیمات اضافی برای Bootstrap 3 */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        /* برای همترازی دکمه سبز در پایین */
+        .col-xs-2 .form-group {
+            margin-bottom: 0;
+        }
+
+        /* اطمینان از همترازی صحیح */
+        .row {
+            margin-bottom: 10px;
+        }
+    </style>
+}
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+
+    <script src="~/js/tom-select.complete.min.js" defer></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const companySelect = new TomSelect("#CompanyId", {
+                create: false,
+                placeholder: "جستجو و انتخاب شرکت...",
+                maxOptions: 1000,
+                allowEmptyOption: true
+            });
+
+            const organizationSelect = new TomSelect("#OrganizationId", {
+                create: false,
+                placeholder: "جستجو و انتخاب سازمان...",
+                maxOptions: 1000,
+                allowEmptyOption: true
+            });
+
+            document.getElementById('btnAddOrg').addEventListener('click', function(e) {
+                e.preventDefault();
+
+                const tedad = document.getElementById('Tedad').value;
+                const companyId = document.getElementById('CompanyId').value;
+                const amount = document.getElementById('Amount').value;
+                const description = document.getElementById('Description').value;
+
+                const returnUrl = encodeURIComponent(
+                    `/CardsManagement/CardOrderCreate?tedad=${tedad}&companyId=${companyId}&amount=${amount}`
+                );
+
+                const url = `/Organization/Create?returnUrl=${returnUrl}`;
+                console.log(url);
+                window.location.href = url;
+            });
+
+            const checkbox = document.getElementById('WillExpire');
+            const inputNumber = document.getElementById('ExpireDayNumber');
+
+            checkbox.addEventListener('change', function () {
+                if (this.checked) {
+                    inputNumber.disabled = false;
+                    inputNumber.focus();
+                } else {
+                    inputNumber.disabled = true;
+                    inputNumber.value = '';
+                }
+            });
+
+        });
+    </script>
+}

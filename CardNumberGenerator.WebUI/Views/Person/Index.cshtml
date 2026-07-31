@@ -1,0 +1,190 @@
+﻿@model IEnumerable<PersonVM>
+@{
+    Layout = "_LayoutNew";
+    ViewBag.PageTitle = "لیست اشخاص";
+}
+@{
+   // Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "لیست اشخاص  ";
+    var dummy = new PersonVM(); // نمونه موقتی
+}
+@section HeaderUpLeftIcons {
+
+    <a href="@Url.Action("create")" class="icon circle-icon glyphicon glyphicon-plus" data-toggle="tooltip" data-placement="bottom" title="افزودن شخص جدید"></a>
+}
+<div class="container">
+  @*   <h2 class="mb-4"> لیست اشخاص         </h2> *@
+    <div id="messageDiv">
+        @if (TempData["Message"] != null)
+        {
+            <h2>@TempData["Message"]</h2>
+        }
+    </div>
+    <div id="Search">
+       جستجو : <input type="text" id="txtSearch" style="margin-bottom:3px;" />
+
+    </div>
+    <div class="row">
+        <div class="col">
+            <table class="table table-bordered table-striped table-responsive">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>نام  </th>
+                        <th>نام  خانوادگی</th>
+                        <th>موبایل</th>
+                        <th>تلفن</th>
+                        <th>کد ملی</th>
+                        <th>تاریخ تولد</th>
+                        <th> محل کار  </th>                        
+                        <th>@Html.DisplayNameFor(m => dummy.GivId)</th><!--<th>کد گیو</th>-->
+                        <th>شرکت</th>
+
+                        @* <th style="width: 180px;">عملیات</th> *@
+                        <th>عملیات</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody">
+                    @foreach (var owner in Model)
+                    {
+                        <tr>
+                            <td>@owner.Id</td>
+                            <td>@owner.FirstName</td>
+                            <td>@owner.LastName</td>
+                            <td>@owner.Mobile</td>
+                            <td>@owner.Phone</td>
+                            <td>@owner.NationalCode</td>
+                            <td>@owner.BirthDateFa</td>
+                            <td>@owner.JobPlace</td>
+                            <td>@owner.GivId</td>
+                            <td>@owner.Company?.CompanyInfo</td>
+                            <td colspan="3">
+                                <a asp-action="Edit" asp-route-Id="@owner.Id" class="btn btn-sm btn-warning">ویرایش</a>
+                                <a asp-action="Details" asp-route-personId="@owner.Id" class="btn btn-sm btn-secondary" style="background-color: white;">مشاهده</a>
+                                <a></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</div>
+
+<br />
+<a asp-action="Create" class="btn btn-success">جدید</a>
+<a asp-action="IndexNew" asp-controller="Home" class="btn btn-secondary" style="background-color: aliceblue;">خانه</a>
+
+@section Scripts
+{
+    <script>
+         // <partial name="_ValidationScriptsPartial" />
+        
+        // $("#txtSearch").on("keydown", function (e) {
+        //     if (e.key === "Enter") { // کلید Enter
+        //         e.preventDefault(); // جلوگیری از submit فرم
+
+        //         var value = $(this).val();
+        //         $.get("/Person/Search", { searchItems: value })
+        //             .done(function (data) {
+        //                 if (!data || data.length === 0) {
+        //                     $("#tbody").html("<tr><td colspan='13'>موردی یافت نشد</td></tr>");
+        //                     //$("#tbody").html("<tr><td ></td><td ></td><td ></td><td ></td><td ></td><td ></td><td ></td><td ></td><td ></td><td ></td><td colspan='3'></td></tr>");
+        //                     return;
+        //                 }
+        //                //let wellformeddata = JSON.parse(data); لازم نیست
+                       
+        //                 let str="";
+        //                 str = data.map(o => {
+        //                 return  
+        //                    `
+        //                     <tr>
+        //                         <td>${o.id}</td>
+        //                         <td>${o.firstName ? o.firstName : ""}</td>
+        //                         <td>${o.lastName}</td>
+        //                         <td>${o.mobile}</td>
+        //                         <td>${o.phone ?? ""}</td>
+        //                         <td>${o.nationalCode??""}</td>
+        //                         <td>${o.birthDateFa ?? ""}</td>
+        //                         <td>${o.jobPlace ??""}</td>
+        //                         <td>${o.GivId}</td>
+        //                         <td>${o.Company.CompanyInfo}</td>
+
+        //                         <td colspan="3">
+        //                             <a href="/Person/Edit/${o.id}" class="btn btn-sm btn-warning">Edit</a>
+        //                             <a href="/Person/Details/${o.id}" class="btn btn-sm btn-secondary" style="background-color: white;">مشاهده</a>
+        //                             <a></a>
+        //                         </td>
+        //                     </tr>                                                                
+        //                    `;
+        //                                    }).join("");
+
+                        
+        //                 console.log(str);
+        //                 $("#tbody").html(str);
+        //             })
+        //             .fail(function () {
+        //                 alert("خطا در دریافت اطلاعات");
+        //             });
+        //     }
+        // });
+        //          $("#txtSearch").on("keydown", function (e) {
+        //             if (e.key === "Enter") {
+        //                 e.preventDefault();
+        //                ...
+        //           }
+        //          });
+
+
+         
+        $(document).ready(function() {
+            $("#txtSearch").on("keydown", function (e) {
+                if (e.key === "Enter") {
+                    e.preventDefault();
+
+                    var value = $(this).val();
+                    $.get("/Person/Search", { searchItems: value })
+                        .done(function (data) {
+                            if (!data || data.length === 0) {
+                                $("#tbody").html("<td><td colspan='13'>موردی یافت نشد</td></tr>");
+                                return;
+                            }
+
+                            var str = "";
+                            for (var i = 0; i < data.length; i++) {
+                                var o = data[i];
+                                var personId = o.Id || o.id||o.personId|| o.PersonId;
+                                str += "<tr>";
+                                str += "<td>" + (o.id || "") + "</td>";
+                                str += "<td>" + (o.firstName || "") + "</td>";
+                                str += "<td>" + (o.lastName || "") + "</td>";
+                                str += "<td>" + (o.mobile || "") + "</td>";
+                                str += "<td>" + (o.phone || "") + "</td>";
+                                str += "<td>" + (o.nationalCode || "") + "</td>";
+                                str += "<td>" + (o.birthDateFa || "") + "</td>";
+                                str += "<td>" + (o.jobPlace || "") + "</td>";
+                                str += "<td>" + (o.givId || "") + "</td>";
+                                str += "<td>" + ((o.company && o.company.companyInfo) || "") + "</td>";
+                                str += '<td colspan="3">';
+                                str += '<a href="/Person/Edit/' + personId + '" class="btn btn-sm btn-warning">ویرایش</a>';
+                                str += '<a href="/Person/Details?personId=' +personId  + '" class="btn btn-sm btn-secondary" style="background-color: white;">مشاهده</a> <a></a> ';
+                                str += "  </td>";
+                                str += "</tr>";
+                            }
+
+                            $("#tbody").html(str);
+                        })
+                        .fail(function () {
+                            alert("خطا در دریافت اطلاعات");
+                        });
+                }
+            });
+        });
+    
+
+    </script>
+}
+
+

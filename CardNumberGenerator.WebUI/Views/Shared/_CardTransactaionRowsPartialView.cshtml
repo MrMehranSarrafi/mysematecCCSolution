@@ -1,0 +1,39 @@
+﻿@model IEnumerable<CardTransactionVM>
+<table class="table table-bordered table-hover table-responsive">
+    <thead>
+        <tr>
+            <th>تاریخ-زمان</th>
+            <th> مبلغ</th>
+            <th> موجودی</th>
+            <th>وضعیت</th>
+            <th>نوع تراکنش</th>
+            <th>شناسه خرید</th>
+            <th>کد فروشگاه</th>
+            <th>کد شعبه</th>
+            <th>توضیحات</th>
+            <th>علامت</th>
+            
+        </tr>
+    </thead>
+    <tbody  >
+        @foreach (var tran in Model)
+        {
+            <tr>
+                <td>@tran.DateCreatedFa</td>
+                <td>@tran.Amount.ToString("0.###", System.Globalization.CultureInfo.InvariantCulture)</td>
+                <td>@tran.RemainedAmount.ToString("0.###", System.Globalization.CultureInfo.InvariantCulture)</td>                
+                <td>@tran.StatusTitle</td>
+                <td>@tran.CardTransactionTypeTitle</td>
+
+                <td>@tran.ProviderId</td>
+                <td>@tran.TerminalId</td>
+                <td>@tran.BranchId</td>
+
+                <td>@tran.Description</td>
+                <td>@tran.SignTitle</td>
+
+            </tr>
+
+        }
+    </tbody>
+</table>

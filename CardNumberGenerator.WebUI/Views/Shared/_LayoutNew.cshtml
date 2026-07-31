@@ -1,0 +1,183 @@
+﻿<!DOCTYPE html>
+<html lang="en" dir="rtl">
+<head>
+    <!-- App title -->
+    @if (ViewBag.Title == null)
+    {
+        <title>مدیریت دسترسی</title>
+    }
+    else
+    {
+        <title>@ViewBag.Title</title>
+    }
+
+    @* @Html.Action("PublicHeader", "Layout", new { Area = "" }) *@
+    @await Html.PartialAsync("layout/PublicHeader") @*  @await Html.PartialAsync("PublicHeader")   looks in Shared/PublicHeader *@
+    @*  @{
+        await Html.RenderPartialAsync("layout/PublicHeader")
+     } *@
+
+
+    @*  @RenderSection("Header", false) *@
+    @await RenderSectionAsync("Header", required: false)
+    @await RenderSectionAsync("Styles", required: false)
+    <script src="~/assets/js/modernizr.min.js"></script>
+    <meta name="robots" content="noindex" />
+</head>
+<body class="fixed-left" parent-menu="@ViewBag.SelectedMenuGroup" selected-menu="@ViewBag.SelectedMenu">
+    <!-- Begin page -->
+    <div id="wrapper">
+        <!-- Top Bar Start -->
+        <div class="topbar">
+
+            <!-- LOGO -->
+            <div class="topbar-left">
+                <a href="/" class="logo">پنل سفارش کارت ها</a>
+            </div>
+
+            <!-- Button mobile view to collapse sidebar menu -->
+            <div class="navbar navbar-default" role="navigation">
+                <div class="container">
+
+                    <!-- Page title -->
+                    <ul class="nav navbar-nav navbar-left">
+                        <li>
+                            <button class="button-menu-mobile open-left">
+                                <i class="zmdi zmdi-menu"></i>
+                            </button>
+                        </li>
+                        <li>
+                            <h4 class="page-title">@ViewBag.PageTitle</h4>
+                        </li>
+                    </ul>
+
+                    @* @Html.Action("TopBar", "Layout", new { Area = "" }) *@
+                    @await RenderSectionAsync("TopBar", required: false)
+                    <!-- Right(Notification and Searchbox -->
+                </div><!-- end container -->
+            </div><!-- end navbar -->
+        </div>
+        <!-- Top Bar End -->
+        <!-- ========== Left Sidebar Start ========== -->
+        <div class="left side-menu">
+            <div class="sidebar-inner slimscrollleft">
+                <!-- User -->
+                @* @Html.Action("UserBox", "Layout", new { Area = "" }) *@
+                @await Html.PartialAsync("layout/UserBox")
+                <!--
+                    Notes about the path:
+
+                 @*1- @await Html.PartialAsync("~/Views/Shared/UserBox.cshtml") *@   <!-- Full path with tilde -->
+                @*  2-@await Html.PartialAsync("Admin/_AdminMenu")*@<!-- Looks in Views/Admin/_AdminMenu.cshtml, then Views/Shared/Admin/_AdminMenu.cshtml -->
+                <!-- End User -->
+                <!--- Sidemenu -->
+                @await Component.InvokeAsync("Navigation")
+                @* @await Html.PartialAsync("layout/Navigation") :Partial View*@
+                @* @Html.Action("Navigation", "Layout", new { Area = "" }) *@
+                <!-- Sidebar -->
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        <!-- Left Sidebar End -->
+        <!-- ============================================================== -->
+        <!-- Start right Content here -->
+        <!-- ============================================================== -->
+        <div class="content-page">
+            <!-- Start content -->
+            <div class="content">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="card-box">
+                                @await RenderSectionAsync("HeaderUpLeftIcons", required: false)
+                                
+                                <div class="col-sm-12">
+                                    @await Html.PartialAsync("_AlertMessages")
+                                </div>
+                                <div class="col-sm-12">
+                                   
+                                    @RenderBody()
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                       
+
+                    </div>
+                    <!-- End row -->
+                </div> <!-- container -->
+            </div> <!-- content -->
+            @await Html.PartialAsync("layout/Footer")
+            @* @Html.Action("Footer", "Layout", new { Area = "" }) *@
+        </div>
+        <!-- End content-page -->
+        <!-- ============================================================== -->
+        <!-- End Right content here -->
+        <!-- ============================================================== -->
+        <!-- Right Sidebar -->
+        @await Html.PartialAsync("layout/Notification")
+
+        @*  @Html.Action("Notification", "Layout", new { Area = "" })  *@
+
+        <!-- /Right-bar -->
+    </div>
+    <div id="modalLoading" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="modalTitle">در حال ثبت مجوزها</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="spinner">
+                        <div class="rect1"></div>
+                        <div class="rect2"></div>
+                        <div class="rect3"></div>
+                        <div class="rect4"></div>
+                        <div class="rect5"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="modalUpload" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="modalTitle">آپلود فایل</h4>
+                </div>
+                <div class="devider-30"></div>
+                <div class="form-group">
+                    <label class="control-label">فایل مورد نظر را انتخاب کنید</label>
+                    <input id="inpUploadModal" type="file" codeprocess="document" class="form-control fit-width width-100" />
+                </div>
+                <div class="form-group">
+                    <label class="control-label">آدرس اینترنتی فایل آپلود شده</label>
+                    <textarea id="inpUploadModalUrl" type="text" class="form-control fit-width width-100"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END wrapper -->
+    <script>
+        var resizefunc = [];
+    </script>
+    <!-- jQuery  -->
+    <script>
+        var base_admin_url = "";//"/panel";
+    </script>
+    @await Html.PartialAsync("layout/PublicFooter")
+    @*  @Html.Action("PublicFooter", "Layout", new { Area = "" }) *@
+    @await RenderSectionAsync("Footer", required: false)
+
+    @*  @RenderSection("Footer", false) *@
+    <!-- App js -->
+    <script src="~/assets/js/jquery.core.js"></script>
+    <script src="~/assets/js/jquery.app.js"></script>
+    @await RenderSectionAsync("Script", required: false)
+    @await RenderSectionAsync("Scripts", required: false)
+    @* @RenderSection("Scripts", false) *@
+
+</body>
+</html>

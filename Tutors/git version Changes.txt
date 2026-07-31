@@ -1,0 +1,3 @@
+$('#decModalErrorMessageSpan'), $('#decModalErrorMessage')
+
+<i class="fa fa-users" aria-hidden="true"></i>

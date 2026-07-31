@@ -1,0 +1,57 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<RootNamespace> CardNoGenerator.Core</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Remove="Helpers\ToPersian().cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="DTO\ViewModels\" />
+		<Folder Include="Exceptions\" />
+		<Folder Include="Core\" />
+		<Folder Include="Application\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="Helpers\ToPersian%28%29.cs" />
+	</ItemGroup>
+	<ItemGroup>
+		<Reference Include="EPPlus">
+			<HintPath>Lib\EPPlus.dll</HintPath>
+		</Reference>
+		<None Include="Lib\EPPlus.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	<ItemGroup>
+		<Reference Include="Microsoft.IO.RecyclableMemoryStream">
+			<HintPath>Lib\Microsoft.IO.RecyclableMemoryStream.dll</HintPath>
+		</Reference>
+		<None Include="Lib\Microsoft.IO.RecyclableMemoryStream.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	<ItemGroup>
+		<Reference Include="EPPlus.System.Drawing">
+			<HintPath>Lib\EPPlus.System.Drawing.dll</HintPath>
+		</Reference>
+		<None Include="Lib\EPPlus.System.Drawing.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	<ItemGroup>
+		<Reference Include="EPPlus.Interfaces">
+			<HintPath>Lib\EPPlus.Interfaces.dll</HintPath>
+		</Reference>
+		<None Include="Lib\EPPlus.Interfaces.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
+</Project>

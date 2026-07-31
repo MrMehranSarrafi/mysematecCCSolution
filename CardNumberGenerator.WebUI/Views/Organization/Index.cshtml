@@ -1,0 +1,140 @@
+﻿@model IEnumerable<OrganizationVM>
+@{
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Organization";
+}
+@{
+    Layout = "_LayoutNew";
+    ViewBag.PageTitle = "   سازمان ها ";
+}
+@section HeaderUpLeftIcons {
+
+    <a href="@Url.Action("CardOrderCreate")" class="icon circle-icon glyphicon glyphicon-plus" data-toggle="tooltip" data-placement="bottom" title="افزودن sسازمان  جدید"></a>
+}
+<div class="container">
+    @*  <h2 class="mb-4">لیست سازمان ها</h2> *@
+    <div id="messageDiv">
+        @if (TempData["Message"] != null)
+        {
+            <h2>@TempData["Message"]</h2>
+        }
+    </div>
+    <div id="Search" style="margin-bottom:3px;">
+        جستجو:  <input type="text" id="txtSearch" />
+
+    </div>
+    <div class="row">
+        <div class="col">
+            <table class="table table-bordered table-striped table-responsive">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ردیف</th>
+                        <th>نام سازمان</th>
+                        <th>تلفن</th>
+                        <th>موبایل</th>
+                        <th style="width: 180px;">عملیات</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody">
+                    @foreach (var organ in Model)
+                    {
+                        <tr>
+                            <td>@organ.RowNo</td>
+                            <td>@organ.OrganizationName</td>
+                            <td>@organ.Telephone</td>
+                            <td>@organ.Mobile</td>
+                            <td colspan="3">
+                                @if (User.HasPermission(UserPermissionsEnum.OrganizationEdit))
+                                {
+                                    <a asp-action="Edit" asp-route-Id="@organ.Id" class="btn btn-sm btn-warning">Edit</a>
+
+                                }
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</div>
+
+<br />
+@if (User.HasPermission(UserPermissionsEnum.OrganizationNew))
+{
+    <a asp-action="Create" class="btn btn-success">جدید</a>
+}
+<a asp-action="IndexNew" asp-controller="Home" class="btn btn-secondary" style="background-color: aliceblue;">خانه</a>
+
+@section Scripts
+{
+    <script>
+         // <partial name="_ValidationScriptsPartial" />
+         $(document).ready(function() {
+
+        });
+        $("#txtSearch").on("keydown", function (e) {
+            if (e.key === "Enter") { // کلید Enter
+                e.preventDefault(); // جلوگیری از submit فرم
+
+                var value = $(this).val();
+                $.get("/Organization/Search", { searchItems: value })
+                    .done(function (data) {
+                        console.log(data);
+                       //let wellformeddata = JSON.parse(data); لازم نیست
+                        let str="";
+                        str = data.map(o => {
+                        return       `
+
+                                            <tr>
+                                                <td>${o.id}</td>
+                                                <td>${o.organizationName}</td>
+                                                <td>${o.telephone}</td>
+                                                <td>${o.mobile}</td>
+                                                <td colspan="3">
+                                                    <a href="/Organization/Edit/${o.id} "  class="btn btn-sm btn-warning">Edit</a>
+                                                </td>
+                                            </tr>
+                                    `;
+                                            }).join("");
+
+                        $("#tbody").html(str);
+                    })
+                    .fail(function () {
+                        alert("خطا در دریافت اطلاعات");
+                    });
+            }
+        });
+
+
+    </script>
+}
+
+@* 
+// روش ۱: استفاده از Url.Action (توصیه شده)
+$.get("@Url.Action("Search", "Organization")", { searchItems: value })
+
+// روش ۲: استفاده از relative path
+$.get("/Organization/Search", { searchItems: value })
+
+// روش ۳: استفاده از base URL
+$.get(`${window.location.origin}/Organization/Search`, { searchItems: value }) *@
+
+
+@* 
+                    data.forEach(function (org) {
+                        // مستقیماً از propertyها استفاده کن
+                        html += `
+<tr>
+    <td>${org.id}</td>
+    <td>${org.name}</td>
+    <td>${org.tel}</td>
+    <td>${org.mobile}</td>
+    <td>
+        <a href="/Organization/Edit/${org.id}" class="btn btn-sm btn-warning">Edit</a>
+    </td>
+</tr>
+                        `;
+                    }); *@

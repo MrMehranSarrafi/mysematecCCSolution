@@ -1,0 +1,554 @@
+﻿@using CardNoGenerator.Core
+@using System.Globalization
+
+@model CardOrder
+@{
+    int radif = 1;
+    var cardOrderId = Model.Id;//متغیر C#
+    var cardOrderIsActive = Model.IsActive;
+}
+@{
+    Layout = "_LayoutNew";
+    ViewBag.PageTitle = "جزییات سفارش کارت";
+}
+@section HeaderUpLeftIcons {
+    <a onclick="history.back()" class="icon circle-icon glyphicon glyphicon-arrow-left" data-toggle="tooltip" data-placement="bottom" title="بازگشت"></a>
+}
+<div class="row" style="margin-top:3px;">
+
+    <input type="hidden" id="cardOrderId" value="@Model.Id" />
+
+    <div class=" col-xs-6">
+        <!-- نمایش نام شرکت -->
+        <div class="form-group">
+            <label class="control-label">نام شرکت</label>
+            <input class="form-control" asp-for="@Model.CompanyName" readonly />
+
+        </div>
+    </div>
+    <div class=" col-xs-6">
+        <!-- نمایش کد شرکت -->
+        <div class="form-group">
+            <label class="control-label">کد شرکت</label>
+            <input class="form-control" asp-for="@Model.CompanyCode" readonly />
+        </div>
+    </div>
+
+</div>
+<div class="row" style="margin-top:3px;">
+    <div class=" col-xs-6">
+        <div class="form-group">
+            <label asp-for="Tedad" class="control-label">تعداد</label>
+            <input asp-for="Tedad" class="form-control" readonly />
+        </div>
+    </div>
+    <div class=" col-xs-6">
+        <div class="form-group">
+            <label asp-for="Amount" class="control-label">مبلغ</label>
+            <input asp-for="Amount" value="@Model.Amount.ToString("0.###", System.Globalization.CultureInfo.InvariantCulture)" class="form-control" readonly />
+        </div>
+    </div>
+</div>
+<div class="row" style="margin-top:3px;">
+    <div class=" col-xs-6">
+        <div class="form-group">
+
+            <label asp-for="OrganizationId" class="control-label"> سازمان   </label>
+            <select asp-for="OrganizationId"
+                    asp-items="ViewBag.Organizations"
+                    class="form-control" disabled>
+                <option value="">انتخاب کنید</option>
+            </select>
+        </div>
+
+    </div>
+    <div class=" col-xs-6">
+        <div class="form-group">
+            <label asp-for="Status" class="control-label">حالت</label><br />
+            <select asp-for="Status" class="form-select" asp-items="Html.GetEnumSelectList<CardOrderStatus>()" disabled>
+            </select>
+
+        </div>
+    </div>
+</div>
+<div class="row" style="margin-top:3px;">
+    <div class="col-xs-6">
+        <div class="form-group" style="margin-top: 3px;">
+            <div class="d-flex align-items-center" style="display: flex; align-items: center;">
+                <div style="display: flex; align-items: center; margin-left: 15px;">
+                    <input asp-for="WillExpire" type="checkbox" class="form-check-input" id="WillExpire" disabled />
+                    <label asp-for="WillExpire" class="form-check-label ms-2 mb-0" style="margin-right: 5px; margin-bottom: 0;">
+                        دارای تاریخ انقضا می باشد
+                    </label>
+                </div>
+                <div style="display: flex; align-items: center;">
+                    <input asp-for="ExpireDayNumber" type="number" class="form-control" id="ExpireDayNumber"
+                           style="width: 80px; margin-left: 5px;" disabled />
+                    <span style="font-weight: bold; margin-right: 5px;">روز</span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-6">
+        @if (Model.WillExpire)
+        {
+            <div class="form-group">
+                <label asp-for="ExpireDateFa" class="control-label">  تاریخ انقضا </label>
+                <input type="text" asp-for="ExpireDateFa" class="form-control" readonly style="min-width:85px; max-width:85px;" />
+            </div>
+        }
+    </div>
+</div>
+<div class="row" style="margin-bottom:3px;">
+    <div class="col-xs-12">
+        <label asp-for="Description" class="control-label">توضیحات</label>
+        <textarea asp-for="Description" class="form-control" readonly></textarea>
+    </div>
+</div>
+
+
+<div class="row" style="padding-inline:3px;margin-block:3px;">
+    @if (Model.Cards != null && Model.Cards.Any())
+    {
+
+        <div class="  col-xs-12" style="margin-bottom:3px;">
+            <a asp-action="CardOrderIndex" class="btn btn-secondary" style="background-color: beige;">لیست سفارش کارت ها</a>
+            <a class="btn btn-secondary" onclick="history.back()">بازگشت</a>
+
+            <input type="text" id="txtSearch" placeholder="  شماره کارت" value="@ViewBag.CardNo" />
+            &nbsp;
+            @if (User.HasPermission(UserPermissionsEnum.CardOrderSendToExcel))
+            {
+                <a href="@Url.Action("ExportExcel", new { cardOrderId = cardOrderId })">
+
+                    خروجی اکسل
+                </a>
+
+            }
+            &nbsp; &nbsp;
+            @if (User.HasPermission(UserPermissionsEnum.CardOrderCSV))
+            {
+                <a id="btnExcel" href="@Url.Action("ExportCsv", new { cardOrderId = cardOrderId })">
+
+                    خروجی csv
+                </a>
+
+            }
+
+            &nbsp;
+            @if (User.HasPermission(UserPermissionsEnum.CardOrderSetAllCardsExpireDate))
+            {
+
+                <button type="button" class="btn btn-primary" id="btnShowModalAllCardsExpireDate " onclick="showModalsetAllCardsExpireDate()">
+                    تعیین تاریخ انقضای کارت ها
+                </button>
+            }
+
+        </div>
+        <div class="  col-xs-12" style="margin-bottom:3px;">
+            <div id="msgCardOrderDisabled" class=" hidden ">
+                این سفارش کارت غیرفعال است.
+            </div>
+        </div>
+
+        <div class="  col-xs-12">
+            @Html.AntiForgeryToken()
+            <table class="table table-bordered table-hover align-middle custom-table">
+                <thead class="text-center">
+                    <tr>
+                        <td>ردیف</td>
+                        <th>شماره کارت</th>
+                        <th>سریال</th>
+                        <th>مبلغ اولیه</th>
+                        <th>موجودی</th>
+                        <th>تاریخ انقضا</th>
+                        <th>تعیین تاریخ انقضا</th>
+                        <th>عملیات</th>
+                        <th>وضعیت</th>
+                        <th>مالک</th>
+                        <th>افزایش اعتبار</th>
+                        <th>کاهش اعتبار</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody">
+                    @foreach (Card card in Model.Cards)
+                    {
+                        <tr data-id="@card.Id">
+                            <td>@radif</td>
+                            @{
+                                radif = radif + 1;
+                            }
+                            <td>@card.CardNo</td>
+                            <td>@card.SerialNo</td>
+                            <td>@card.Amount.ToString("0.###", CultureInfo.InvariantCulture)</td>
+                            <td>@card.RemainedAmount.ToString("0.###", System.Globalization.CultureInfo.InvariantCulture)</td>
+                            @if (card.IsExpired)
+                            {
+                                <td class="bg-secondary ">@card.ExpireDateFa</td>
+                            }
+                            else
+                            {
+                                <td>@card.ExpireDateFa</td>
+                            }
+                            <td>
+                                <div class="d-flex justify-content-center">
+                                    @if (User.HasPermission(UserPermissionsEnum.CardOrderSetTheCardExpireDate))
+                                    {
+
+                                        <button type="button"
+                                                class="btn btn-primary "
+                                                onclick="showModalSetExpireDate(@card.Id)">
+                                            تاریخ انقضا
+                                        </button>
+                                    }
+                                </div>
+                            </td>
+                            <!-- مشاهده تراکنش -->
+                            <td>
+                                <div class="d-flex justify-content-center">
+                                    @if (User.HasPermission(UserPermissionsEnum.CardOrderViewTheCardTransactions))
+                                    {
+
+                                        <button type="button"
+                                                class="btn btn-primary "
+                                                onclick="ViewCardTransactions(@card.Id)">
+                                            مشاهده تراکنش‌ها
+                                        </button>
+                                    }
+                                </div>
+                            </td>
+                            <!-- فعال / غیرفعال -->
+                            <td>
+                                <div class="d-flex align-items-center justify-content-center gap-2">
+                                    @if (card.IsActive)
+                                    {
+                                        <button type="button"
+                                                class="btn btn-danger "
+                                                onclick="DisableCard(@card.Id)">
+                                            غیرفعال کردن
+                                        </button>
+                                        <span class="badge bg-success">
+                                            فعال
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <button type="button"
+                                                class="btn btn-primary "
+                                                onclick="EnableCard(@card.Id)">
+                                            فعال کردن
+                                        </button>
+                                        <span class="badge bg-secondary">
+                                            غیرفعال
+                                        </span>
+                                    }
+                                </div>
+                            </td>
+                            <!-- تعیین مالک -->
+                            <td>
+                                <div class="d-flex justify-content-center">
+                                    @if (card.OwnerPersonId == null)
+                                    {
+                                        <button type="button"
+                                                class="btn btn-info "
+                                                onclick="showSetCardOwnerModal(@card.Id)">
+                                            تعیین مالک
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <a asp-action="Details" asp-controller="Person" asp-route-personId="@card.OwnerPersonId" asp-route-returnUrl="@Url.Action("CardOrderDetails","CardsManagement", new { area =""})">
+                                            <text>@card.Owner?.FirstName   @card.Owner?.LastName</text>
+                                        </a>
+                                    }
+                                </div>
+                            </td>
+                            <!-- افزایش اعتبار -->
+                            <td>
+                                @if (User.HasPermission(UserPermissionsEnum.CardOrderIncreaseCreditOfTheCard))
+                                {
+
+                                    <button type="button"
+                                            class="btn btn-info "
+                                            onclick="  showIncreaseCardCreditModal(@card.Id,String( @card.CardNo).padStart(16,'0') )">
+                                        افزایش اعتبار
+                                    </button>
+                                }
+                            </td>
+                            <!-- کاهش اعتبار -->
+                            <td>
+                                @if (User.HasPermission(UserPermissionsEnum.CardOrderDecreaseCreditOfTheCard))
+                                {
+                                    <button type="button"
+                                            class="btn btn-info "
+                                            onclick="  showDecreaseCardCreditModal(@card.Id,String( @card.CardNo).padStart(16,'0') )">
+                                        کاهش اعتبار
+                                    </button>
+
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    }
+</div>
+
+<div class="row" style="margin-top:3px;">
+    <div class="col-xs-12">
+        <a asp-action="CardOrderIndex" class="btn btn-secondary" style="background-color: beige;">لیست سفارش کارت ها</a>
+        <button type="button" class="btn btn-secondary" onclick="history.back()">  بازگشت</button>
+    </div>
+</div>
+<!-- مودال  مشاهده تراکنش های  کارت :-->
+<div class="row">
+    <div class="col-xs-12">
+        <div class="modal fade" id="myTransactionsModal" tabindex="-1" aria-labelledby="ViewTransactions" role="dialog">
+            <div class="modal-dialog mymodal-transactions">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5 text-center mx-auto" id="ViewTransactions">تراکنش های کارت</h1>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <!-- یک المان خالی برای متعادط کردن -->
+                        <div class="invisible" style="width: 48px;"></div>
+                    </div>
+                    <div class="modal-body  " id="Cardtransactions" style="white-space:nowrap; overflow-x:auto; ">
+                        --ajax modal content
+                    </div>
+                    <div class="modal-footer">
+
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- مودال تعیین مالک کارت :-->
+<div class="modal fade" id="setOwnerModal" tabindex="-1" aria-labelledby="setOwnerModalLabel" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <input type="hidden" id="ownerPersonId" />
+                <h5 class="modal-title" id="setOwnerModalLabel">تعیین مالک کارت</h5>
+
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+            </div>
+            <div class="modal-body">
+
+                <div class="mb-3">
+
+                    <label for="mobileInput" class="form-label"> شماره موبایل  </label>
+                    <input type="text" class="form-control" id="mobileInput" placeholder="مثال: 09123456789" maxlength="11" />
+                </div>
+                <div id="ownerResult" class="myAlert myAlert-info hidden mb-3">
+                    <strong>نام و نام خانوادگی:</strong> <span id="ownerName"></span>
+
+                </div>
+                <div id="ownerNotFound" class="myAlert myAlert-danger hidden mb-3 ">
+                    <span id="ownerNOtFoundMessage">کاربری با این شماره موبایل یافت نشد.</span>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
+                <button type="button" class="btn btn-primary" id="btnConfirmOwner" disabled>تأیید و تعیین مالک</button>
+                <a class="btn btn-primary hidden" id="createPersonBtn">تعریف شخص جدید</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!--مودال افزایش اعتبار :-->
+<div class="modal fade " id="increaseCardCreditModal" tabindex="-1" aria-labelledby="increaseCardCreditLabel" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id=" increaseCardCreditLabel">افزایش اعتبار کارت شماره <span id="incModalCardNoSpn"></span></h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="incModalAmount" class="form-label required"> مبلغ</label>
+                    <input type="text" class="form-control" id="incModalAmount" placeholder="  " maxlength="19" />
+                </div>
+                <div class="mb-3">
+                    <label for="incModalDescription" class="control-label required">توضیحات</label>
+                    <textarea id="incModalDescription" class="form-control"></textarea>
+                </div>
+                <div id="incModalErrorMessage" class="myAlert myAlert-danger hidden">
+                    <span id="incModalErrorMessageSpan"></span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">بستن</button>
+                <button type="button" class="btn btn-primary" id="incModalIncreaseCreditCardBtn" onclick="increaseCreditCard()">  افزایش اعتبار    </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--مودال کاهش اعتبار :-->
+<div class="modal fade " id="decreaseCardCreditModal" tabindex="-1" aria-labelledby="decreaseCardCreditLabel" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="decreaseCardCreditLabel">کاهش اعتبار کارت شماره <span id="decModalCardNoSpn"></span></h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="decModalAmount" class="form-label required"> مبلغ</label>
+                    <input type="text" class="form-control" id="decModalAmount" placeholder="  " maxlength="19" />
+                </div>
+                <div class="mb-3">
+                    <label for="decModalDescription" class="control-label required">توضیحات</label>
+                    <textarea id="decModalDescription" class="form-control"></textarea>
+                </div>
+                <div id="decModalErrorMessage" class="myAlert myAlert-danger hidden">
+                    <span id="decModalErrorMessageSpan"></span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
+                <button type="button" class="btn btn-primary" id="decModalIncreaseCreditCardBtn" onclick="decreaseCreditCard()">  کاهش اعتبار    </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- مودال تعیین تاریخ انقضای کارت :-->
+<div class="row">
+    <div class="modal fade" id="ExpireDateModal" tabindex="-1" aria-labelledby="ExpireDateModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">تعیین تاریخ انقضای کارت</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="txtmodalExpireDateFa" class="form-label">  تاریخ انقضای کارت  </label>
+                        <input type="text" class="form-control" id="txtmodalExpireDateFa" placeholder="مثال:  1390/05/21" maxlength="10" oninput="FixFaDate(this)" />
+                    </div>
+                </div>
+                <div id="divMsgExpireDateModal" class="myAlert myAlert-danger hidden">
+                    <span id="spnMsgExpireDateModal">شماره کارت یافت نشد.</span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
+                    <button type="button" class="btn btn-primary" id="btnModalConfirmExpireDateFa">تأیید </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- مودال تعیین تاریخ انقضای کل کارت های این سفارش کارت :-->
+<div class="row">
+    <div class="modal fade" id="AllCardsExpireDateModal" tabindex="-1" aria-labelledby="AllCardsExpireDateModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">تعیین تاریخ انقضای سفارش کارت</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="txtmodalAllCardsExpireDateFa" class="form-label">  تاریخ انقضای کارت ها  </label>
+                        <input type="text" class="form-control" id="txtmodalAllCardsExpireDateFa" placeholder="مثال:  1390/05/21" maxlength="10" oninput="FixFaDate(this)" />
+                    </div>
+                </div>
+                <div id="divMsgAllCardsExpireDateModal" class="myAlert myAlert-danger hidden">
+                    <span id="spnMsgAllCardsExpireDateModal">شماره کارت یافت نشد.</span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
+                    <button type="button" class="btn btn-primary" id="btnModalAllCardsConfirmExpireDateFa">تأیید </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Styles
+{
+    <style>
+        #msgCardOrderDisabled {
+            margin-right: 5px;
+            margin-top: 5px;
+            width: 100%;
+            height: 100px;
+            background-color: #6c757d;
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 4px;
+            /* تغییرات اصلی برای وسط‌چین کردن */
+            display: flex;
+            justify-content: center; /* وسط‌چین افقی */
+            align-items: center; /* وسط‌چین عمودی */
+            text-align: center; /* این خط دیگر ضروری نیست چون justify-content کار می‌کند، اما بد نیست باشد */
+            font-size: 2rem;
+            color: white;
+        }
+        /* Optional: Add hover effects for table rows */
+        .custom-table tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+        /* کلاس برای هایلایت کردن سطر انتخاب شده */
+        #tbody tr.active-row {
+            background-color: rgba(13, 110, 253, 0.5) !important; /* رنگ آبی کم‌رنگ */
+            border-right: 5px solid #0d6efd; /* خط آبی سمت راست */
+            font-weight: bold;
+        }
+
+            #tbody tr.active-row:hover {
+                background-color: #cce5ff !important; /* رنگ آبی پررنگ‌تر هنگام هاور */
+            }
+
+        #myTransactionsModal .mymodal-transactions {
+            width: 95%;
+            max-width: 1500px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .myAlert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+            border-radius: 4px
+        }
+
+        .myAlert-info {
+            color: #31708f;
+            background-color: #d9edf7;
+            border-color: #bce8f1
+        }
+
+        .myAlert-danger {
+            color: #a94442;
+            background-color: #f2dede;
+            border-color: #ebccd1
+        }
+    </style>
+}
+@section Scripts
+{
+
+    <script>
+        var cardOrderId2 = @Model.Id;//global js variable, So we can use it anywhere in JS code
+        var cardOrderIsActive = @Model.IsActive.ToString().ToLower();        
+        
+        const companyId = @Model.CompanyId;//; is considered a good practice, although js has Automatic Semicolon Insertion (ASI)
+
+    </script>
+
+    <script src="~/js/card-order-details0.js" asp-append-version="true"></script>
+    <script src="~/js/card-order-details.js" asp-append-version="true"></script>
+    <script src="~/js/card-order-details2.js" asp-append-version="true"></script>
+    <script src="~/js/card-order-details3.js" asp-append-version="true"></script>
+}

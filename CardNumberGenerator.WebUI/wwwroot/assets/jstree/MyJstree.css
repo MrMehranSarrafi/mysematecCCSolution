@@ -1,0 +1,124 @@
+﻿.fa-folder {
+    display: none !important;
+}
+
+body {
+    font-family: 'Segoe UI', 'Vazir', system-ui, sans-serif;
+    background: #f0f2f5;
+    /*margin: 0;
+    padding: 20px;*/
+    color: #1e293b;
+}
+
+.permission-card {
+    max-width: 800px;
+    margin: 2rem auto;
+    background: white;
+    border-radius: 28px;
+    box-shadow: 0 20px 35px -12px rgba(0,0,0,0.15);
+    overflow: hidden;
+}
+
+.card-header {
+    background: linear-gradient(135deg, #1e3c72 0%, #2b4c7c 100%);
+    padding: 1.5rem 2rem;
+}
+
+    .card-header h2 {
+        margin: 0;
+        color: white;
+        font-weight: 500;
+        font-size: 1.65rem;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .card-header p {
+        margin: 0.5rem 0 0;
+        color: #cbd5e6;
+        font-size: 0.85rem;
+    }
+
+.tree-container {
+    padding: 1.8rem 2rem;
+    background: #ffffff;
+}
+
+.jstree-default .jstree-anchor {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    font-weight: 500;
+}
+
+.jstree-node[aria-level="1"] > .jstree-anchor {
+    font-weight: 700;
+    color: #0c4a6e;
+}
+
+.btn-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 1rem 2rem 1.8rem;
+    background-color: #f9fafc;
+    border-top: 1px solid #e2e8f0;
+    flex-wrap: wrap;
+}
+
+.btn {
+    border: none;
+    padding: 8px 22px;
+    border-radius: 40px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    background: white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-success {
+    background: #2b6e4f;
+    color: white;
+    border: 1px solid #1f5a3f;
+}
+
+    .btn-success:hover {
+        background: #1f5a3f;
+        transform: translateY(-1px);
+    }
+
+.btn-outline {
+    border: 1px solid #cbd5e1;
+    color: #2c3e66;
+}
+
+    .btn-outline:hover {
+        background: #eef2ff;
+        border-color: #94a3b8;
+    }
+
+footer {
+    text-align: center;
+    font-size: 0.75rem;
+    color: #5b6e8c;
+    margin-top: 1rem;
+}
+
+@media (max-width: 550px) {
+    .tree-container, .btn-actions, .card-header {
+        padding: 1rem;
+    }
+
+    .btn-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .btn {
+        justify-content: center;
+    }
+}

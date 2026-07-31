@@ -1,0 +1,20 @@
+﻿@{
+    ViewData["Title"] = "صفحه اصلی";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    //Layout = "_LayoutNew";
+    ViewBag.PageTitle = "صفحه اصلی";
+}
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://www.givsoft.ir">برنامه شرکت گیو</a>.</p>
+</div>
+<!--<a class="btn btn-success" asp-action="Index" asp-controller="Customer">لیست مشتریان</a>-->
+<a class="btn btn-success" asp-action="Index" asp-controller="Company">لیست شرکت ها</a>
+<a class="btn btn-success" asp-action="Index" asp-controller="UserAccount">لیست کاربران</a>
+<a class="btn btn-success" asp-action="Index" asp-controller="Organization">لیست سازمان ها</a>
+<a class="btn btn-success" asp-action="Index" asp-controller="Person">لیست اشخاص</a>
+<a class="btn btn-success" asp-action="CardOrderIndex" asp-controller="CardsManagement">لیست سفارش کارت ها</a>
+<a class="btn btn-success" asp-action="CardsList" asp-controller="CardsManagement">جستجوی کارت ها</a>
+

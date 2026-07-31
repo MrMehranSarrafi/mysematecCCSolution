@@ -1,0 +1,57 @@
+﻿@using CardNoGenerator.WebUI
+@{
+    ViewData["Title"] = "صفحه اصلی";
+    ViewBag.PageTitle = "صفحه اصلی";
+    Layout = "~/Views/Shared/_LayoutNew.cshtml";
+    // Layout = "_LayoutNew";
+}
+@section Styles {
+    <style>
+        a {
+            display: inline-block;
+            margin-bottom: 2px !important;
+        }
+    </style>
+}
+
+<!-- <div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>-->
+<div class="row">
+    <br />
+    <br />
+    <br />
+    <br />
+    
+    @* @if (User.HasClaim("Permission",UserPermissionsEnum.CompanyList.ToString())) *@
+    @if (User.HasPermission(UserPermissionsEnum.CompanyList))
+    {
+        <a class="btn btn-success" asp-action="Index" asp-controller="Company">لیست شرکت ها</a>
+
+    }
+    @if (User.HasPermission(UserPermissionsEnum.UserAccountList))
+    {
+        <a class="btn btn-success" asp-action="Index" asp-controller="UserAccount">لیست کاربران</a>
+
+    }
+    @if (User.HasPermission(UserPermissionsEnum.OrganizationList))
+    {
+    <a class="btn btn-success" asp-action="Index" asp-controller="Organization">لیست سازمان ها</a>
+
+    }
+    @if (User.HasPermission(UserPermissionsEnum.PersonList))
+    {
+    <a class="btn btn-success" asp-action="Index" asp-controller="Person">لیست اشخاص</a>
+    }
+    @if (User.HasPermission(UserPermissionsEnum.CardOrderList))
+    {
+    <a class="btn btn-success" asp-action="CardOrderIndex" asp-controller="CardsManagement">لیست سفارش کارت ها</a>
+    }
+    @if (User.HasPermission(UserPermissionsEnum.CardOrderDetailsView))
+    {
+    <a class="btn btn-success" asp-action="CardsList" asp-controller="CardsManagement">جستجوی کارت ها</a>
+    }
+   
+
+</div>

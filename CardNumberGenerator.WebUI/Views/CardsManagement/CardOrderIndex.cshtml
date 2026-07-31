@@ -1,0 +1,180 @@
+﻿@using CardNoGenerator.Core
+@using CardNoGenerator.WebUI
+@model IEnumerable<CardOrder>
+@{
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "سفارش کارت ها";
+}
+@{
+    Layout = "_LayoutNew";
+    ViewBag.PageTitle = " سفارش کارت ها ";
+}
+
+<div id="messageDiv">
+    @if (TempData["Message"] != null)
+    {
+        <h2>@TempData["Message"]</h2>
+    }
+</div>
+@section HeaderUpLeftIcons {
+
+    <a href="@Url.Action("CardOrderCreate")" class="icon circle-icon glyphicon glyphicon-plus" data-toggle="tooltip" data-placement="bottom" title="افزودن سفارش کارت جدید"></a>
+}
+<div id="Search">
+    جستجو:  <input type="text" id="txtSearch" placeholder="  کد شرکت یا شماره کارت" />
+
+</div>
+<br />
+<table class="table table-bordered table-striped text-center table-responsive">
+    <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>  شرکت</th>
+            <th>تعداد</th>
+            <th>مبلغ </th>
+            <th>سازمان</th>
+            <th>وضعیت</th>
+            <th>تاریخ انقضا</th>
+            <th> عملیات </th>
+            <th>نمایش</th>
+            <th>فعال/غیرفعال کردن</th>
+        </tr>
+    </thead>
+    <tbody id="tbody">
+        @foreach (var c in Model)
+        {
+            <tr>
+                <td>@c.Id</td>
+                <td>@c.Company?.CompanyName   &nbsp;    @c.Company?.CompanyCode</td>
+                <td>@c.Tedad</td>
+
+                <td>@c.Amount.ToString("0.###", System.Globalization.CultureInfo.InvariantCulture)</td>
+
+                <td>@c.Organization?.OrganizationName</td>
+                <td>
+
+                    @c.StatusTitle
+                </td>
+                <td>@c.ExpireDateFa</td>
+                @if (c.Status == CardOrderStatus.NewOrInitial)
+                {
+                    <td>
+                        @if (User.HasPermission(UserPermissionsEnum.CardOrderEdit))
+                        {
+                            <a asp-action="CardOrderEdit" asp-route-Id="@c.Id" class="btn btn-primary">ویرایش </a>
+                        }
+                        @if (User.HasPermission(UserPermissionsEnum.CardOrderConfirm))
+                        {
+                            <a asp-action="ConfirmCardOrder" asp-route-cardOrderId="@c.Id" class="btn btn-primary">تایید </a>
+
+                        }
+                        @if (User.HasPermission(UserPermissionsEnum.CardOrderCancel))
+                        {
+                            <a asp-action="CancelCardOrder" asp-route-cardOrderId="@c.Id" class="btn btn-secondary">لغو</a>
+
+                        }
+
+                    </td>
+                }
+                else
+                {
+                    <td class="bg-secondary ">
+                        @if (User.HasPermission(UserPermissionsEnum.CardOrderEdit))
+                        {
+                            <a class="btn btn-primary" disabled>ویرایش </a>
+                        }
+                        @if (User.HasPermission(UserPermissionsEnum.CardOrderConfirm))
+                        {
+                            <a class="btn btn-primary" disabled>تایید </a>
+                        }
+                        @if (User.HasPermission(UserPermissionsEnum.CardOrderCancel))
+                        {
+                            <a class="btn btn-secondary " disabled>لغو</a>
+                        }
+                    </td>
+                }
+                <td>
+                    @if (User.HasPermission(UserPermissionsEnum.CardOrderDetailsView))
+                    {
+
+                        <a asp-action="CardOrderDetails" asp-route-Id="@c.Id">جزییات</a>
+                    }
+                </td>
+                @{
+                    var isEnabled = c.Status != CardOrderStatus.Canceled;
+                    if (isEnabled)
+                    {
+                        <td>
+                            <!-- <td class="bg-secondary  bg-opacity-50 ">-->
+                            @if (c.IsActive == true)
+                            {
+                                @* <a asp-action="Delete" asp-route-id="@user.Id" class="btn btn-sm btn-danger">Delete</a> *@
+                                <a asp-action="DisableCardOrder" asp-route-cardOrderId="@c.Id"
+                                   class="btn btn-sm btn-danger"
+                                   onclick="return confirm('آیا از غیرفعال کردن این سفارش کارت اطمینان دارید؟');">
+                                    غیرفعال کردن
+                                </a>
+                            }
+                            else
+                            {
+                                <a asp-action="EnableCardOrder" asp-route-cardOrderId="@c.Id"
+                                   class="btn btn-sm btn-success"
+                                   onclick="return confirm('آیا از فعال کردن این سفارش کارت اطمینان دارید؟');">
+                                    فعال کردن
+                                </a>
+                            }
+                        </td>
+                    }
+                    else
+                    {
+                        <td class="bg-secondary ">
+
+                            @if (c.IsActive == true)
+                            {
+                                <a class="btn btn-sm btn-danger" disabled ">
+                                    غیرفعال کردن
+                                </a>
+                            }
+                            else
+                            {
+                                <a class="btn btn-sm btn-success" disabled>
+                                    فعال کردن
+                                </a>
+                            }
+                        </td>
+                    }
+                }
+            </tr>
+        }
+
+    </tbody>
+</table>
+@if (User.HasPermission(UserPermissionsEnum.CardOrderNew))
+{
+    <a asp-action="CardOrderCreate" class="btn btn-success">جدید</a>
+}
+<a asp-controller="Home" asp-action="IndexNew" class="btn btn-secondary" style="background-color: aliceblue;">خانه</a>
+@section Styles {
+
+}
+@section Scripts
+{
+    <script>
+        $("#txtSearch").on("keydown", function (e) {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                var value = $(this).val();
+
+                $.get("/CardsManagement/CardOrderSearch", { companyCodeOrCardNo: value })
+                    .done(function (data) {
+                        $("#tbody").html(data);
+                    })
+                    .fail(function () {
+                        alert("خطا در دریافت اطلاعات");
+                    });
+            }
+        });
+
+    </script>
+
+}

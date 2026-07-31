@@ -1,0 +1,89 @@
+﻿@model IEnumerable<PermissionDto>
+
+@{
+    Layout = "~/Views/Shared/_LayoutNew.cshtml";
+    ViewBag.PageTitle = $"  مجوزهای گروه مجوزهای" + "-" + ViewBag.PermissiongroupName;
+}
+
+@section Header {
+    <link href="~/assets/plugins/jstree/style.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        .fa-folder {
+            display: none !important;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script src="~/assets/plugins/jstree/jstree.min.js"></script>
+    <script src="~/assets/pages/jquery.tree.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+
+            initializePermissionScript();//codeprocess.panel.js line 433
+            //? base_admin_url ? کجا مقداردهی شده
+            //toastr.success("User saved successfully.");
+            //toastr.error("Failed to save user.");
+
+        });
+
+
+    </script>
+}
+
+<div codeprocess-back-form="/useraccount/permissiongroup" codeprocess-ajax-form="/useraccount/PermissiongroupPermissions">
+    <input type="hidden" name="PermissiongroupId" value="@ViewBag.PermissiongroupId" />
+    <div class="col-md-12">
+        <div class="card-box">
+            <a asp-action="permissiongroupindex" class="icon circle-icon glyphicon glyphicon-arrow-left" data-toggle="tooltip" data-placement="bottom" title="بازگشت به لیست"></a>
+            <div id="checkTree">
+                <ul>
+                    @foreach (var item in Model.Where(s => s.ParentId == null))
+                    {
+                        if (Model.Count(p => p.ParentId == item.PermissionId) > 0)
+                        {
+                            <li value="@item.PermissionId">
+                                @item.PermissionLabel
+                                <ul>
+                                    @foreach (var child in Model.Where(p => p.ParentId == item.PermissionId))
+                                    {
+                                        if (Model.Count(q => q.ParentId == child.PermissionId) > 0)
+                                        {
+                                            <li value="@child.PermissionId">
+                                                @child.PermissionLabel
+                                                <ul>
+                                                    @foreach (var sub in Model.Where(p => p.ParentId == child.PermissionId))
+                                                    {
+                                                        <li data-jstree='{"selected":@sub.HasPermission.ToString().ToLower()}' value="@sub.PermissionId">@sub.PermissionLabel</li>
+                                                    }
+                                                </ul>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li data-jstree='{"selected":@child.HasPermission.ToString().ToLower()}' value="@child.PermissionId">@child.PermissionLabel</li>
+                                        }
+                                    }
+                                </ul>
+                            </li>
+                        }
+                        else
+                        {
+                            <li data-jstree='{"selected":@item.HasPermission.ToString().ToLower()}' value="@item.PermissionId">@item.PermissionLabel</li>
+                        }
+                    }
+                </ul>
+            </div>
+            <div class="devider-15"></div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input id="btnSubmit" type="submit" value="ثبت" class="btn btn-success" />
+                    @* <button type="button" class="btn btn-secondary" onclick="history.back()">خیر، بازگشت</button> *@
+                    <span class="btn btn-inverse" onclick="history.back()">بازگشت</span>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>
+

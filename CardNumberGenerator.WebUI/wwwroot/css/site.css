@@ -1,0 +1,62 @@
+html {
+    font-size: 14px;
+    position: relative;
+    min-height: 100%;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+body {
+    margin-bottom: 60px;
+}
+
+/* -------------------- TomSelect Styling -------------------- */
+
+.ts-control {
+    border: 1px solid #ced4da;
+    border-radius: 0.375rem;
+    min-height: calc(2.25rem + 2px);
+}
+
+    .ts-control.focus {
+        border-color: #86b7fe;
+        box-shadow: 0 0 0 0.25rem rgba(13,110,253,.25);
+    }
+
+.form-select.ts-hidden-accessible + .ts-wrapper .ts-control {
+    border: 1px solid #ced4da;
+}
+
+.ts-wrapper.form-control,
+.ts-wrapper.form-select {
+    border: none;
+    padding: 0;
+}
+
+/* -------------------- Navbar Vertical Divider (RTL Correct) -------------------- */
+
+/* فقط منوی اصلی */
+.navbar-nav:first-of-type .nav-item {
+    position: relative;
+}
+
+    /* روی همه آیتم‌ها به جز آخری (سمت چپ‌ترین) */
+    .navbar-nav:first-of-type .nav-item:not(:last-child)::after {
+        content: "";
+        position: absolute;
+        left: 0; /* مهم: چون RTL است */
+        top: 50%;
+        transform: translateY(-50%);
+        height: 60%;
+        width: 1px;
+        background-color: #dcdcdc;
+    }
+
+/* تنظیم فاصله لینک‌ها */
+.navbar-nav:first-of-type .nav-link {
+    padding: 0 20px;
+}

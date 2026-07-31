@@ -1,0 +1,189 @@
+﻿@model Company
+
+@{
+    ViewData["Title"] = "افزودن شرکت جدید";
+    Layout = "_LayoutNew";
+    ViewBag.PageTitle = "شرکت جدید";
+}
+@section HeaderUpLeftIcons {
+    <a onclick="history.back()" class="icon circle-icon glyphicon glyphicon-arrow-left" data-toggle="tooltip" data-placement="bottom" title="بازگشت"></a>
+}
+<div class="container" style="margin-top: 20px;">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <i class="fa fa-building"></i> @ViewData["Title"]
+                    </h3>
+                </div>
+
+                <div class="panel-body">
+                    <form asp-action="Create" method="post" id="createCompanyForm">
+                        @Html.AntiForgeryToken()
+
+                        <div class="row">
+                            <!-- نام شرکت -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="CompanyName" class="required"></label>
+                                    <input asp-for="CompanyName" class="form-control"
+                                           placeholder="نام شرکت را وارد کنید"
+                                           autofocus />
+                                    <span asp-validation-for="CompanyName" class="text-danger small"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="CompanyCode" class="required"></label>
+                                    <input asp-for="CompanyCode" class="form-control"
+                                           placeholder="کد شرکت را وارد نمایید"
+                                           dir="ltr"
+                                           maxlength="8"
+                                           oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
+                                    <span asp-validation-for="CompanyCode" class="text-danger small"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="ApiUsername"></label>
+                                    <input asp-for="ApiUsername" class="form-control" />
+                                    <span asp-validation-for="ApiUsername" class="text-danger small"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="ApiPassword"></label>
+                                    <input asp-for="ApiPassword" class="form-control" maxlength="50" />
+                                    <span asp-validation-for="ApiPassword" class="text-danger small"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="ClientID"></label>
+                                    <input asp-for="ClientID" class="form-control" />
+                                    <span asp-validation-for="ClientID" class="text-danger small"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="ClientSecret"></label>
+                                    <input asp-for="ClientSecret" class="form-control" />
+                                    <span asp-validation-for="ClientSecret" class="text-danger small"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- دکمه‌ها -->
+                        <div class="form-group" style="margin-top: 20px;">
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-success" id="btnSubmit" style="padding-left: 20px; padding-right: 20px; margin-left: 5px;">
+                                    <i class="fa fa-save"></i> ذخیره
+                                </button>
+
+                                <a asp-action="Index" class="btn btn-default" style="padding-left: 20px; padding-right: 20px; margin-right: 5px;">
+                                    <i class="fa fa-arrow-left"></i> بازگشت به لیست
+                                </a>
+                            </div>
+                        </div>
+
+                        <div asp-validation-summary="All"
+                             class="alert alert-danger @(ViewData.ModelState.IsValid ? "hidden" : "")"
+                             style="margin-top: 15px;"
+                             id="validationSummary">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        
+        <link rel="stylesheet" href="~/assets/css/font-awesome4.7.0.min.css" asp-append-version="true" />
+        .required:after {
+            content: " *";
+            color: #dc3545;
+        }
+
+        .panel {
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            border-radius: 4px;
+        }
+
+        .panel-heading {
+            background-color: #337ab7;
+            color: white;
+            border-top-left-radius: 3px;
+            border-top-right-radius: 3px;
+        }
+
+        .form-control:focus {
+            border-color: #66afe9;
+            outline: 0;
+            box-shadow: inset 0 1px 1px rgba(0,0,0,0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+        }
+
+        /* برای RTL */
+        .form-control[dir="ltr"] {
+            text-align: left;
+            direction: ltr;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .row {
+            margin-bottom: 10px;
+        }
+
+        .fa {
+            margin-left: 5px;
+        }
+    </style>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        $(document).ready(function() {
+            // جلوگیری از ارسال دوباره فرم
+            $('#createCompanyForm').on('submit', function() {
+                var form = $(this);
+                // بررسی client-side validation
+                if (!form.valid()) {
+                    return;
+                }
+                $('#btnSubmit').prop('disabled', true)
+                    .html('<i class="fa fa-spinner fa-spin"></i> در حال ذخیره...');
+            });
+
+            // فعال کردن کلیک Enter برای فیلدها
+            $('input, textarea').keydown(function(e) {
+                if (e.keyCode === 13) {
+                    e.preventDefault();
+                    var inputs = $(this).closest('form').find(':input:visible');
+                    var next = inputs.eq(inputs.index(this) + 1);
+                    if (next.length) {
+                        next.focus();
+                    } else {
+                        $(this).closest('form').submit();
+                    }
+                }
+            });
+        });
+    </script>
+}

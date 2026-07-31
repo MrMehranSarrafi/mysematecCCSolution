@@ -1,0 +1,57 @@
+﻿@model IEnumerable<EditUserDto>
+@{
+    bool IsAdmin = ViewBag.IsAdmin;
+}
+
+@if (Model != null && Model.Any())
+{
+
+    @foreach (var user in Model)
+    {
+        <tr>
+            <td>@user.Id</td>
+            <td>@user.FirstName</td>
+            <td>@user.LastName</td>
+            <td>@user.CompanyName</td>
+            <td>@user.CompanyCode</td>
+            <td>@user.Telephone</td>
+            <td>@user.PhoneNumber</td>
+            <td>@user.UserName</td>
+            <td>@user.Email</td>
+            <td style="min-width:120px; white-space: nowrap;">
+                @if (User.HasPermission(UserPermissionsEnum.UserAccountEdit))
+                {
+                    <a asp-action="Edit" asp-route-id="@user.Id" class="btn btn-sm btn-warning">ویرایش</a>
+                }
+                <a asp-action="ChangePassword" asp-route-id="@user.Id" asp-route-username="@user.UserName" class="btn btn-sm btn-info">تغییر رمز</a>
+
+                @if (user.Id != 1)
+                {
+                    if (user.IsActive == true)
+                    {
+                        <a asp-action="DisableUser" asp-route-id="@user.Id" class="btn btn-sm btn-danger" onclick="return confirm('آیا از غیرفعال کردن این کاربر اطمینان دارید؟');">غیرفعال کردن</a>
+                    }
+                    else
+                    {
+                        <a asp-action="EnableUser" asp-route-id="@user.Id" class="btn btn-sm btn-success" onclick="return confirm('آیا از فعال کردن این کاربر اطمینان دارید؟');">فعال کردن</a>
+                    }
+                }
+            </td>
+            @if (User.HasPermission(UserPermissionsEnum.UserAccountPermissions))
+            {
+                <td style="min-width:160px; white-space: nowrap;">
+                    <a asp-action="UserPermissions" asp-route-userId="@user.Id" asp-route-username="@user.UserName" class="btn btn-default">مجوز ها</a> |
+                    <a asp-action="UserPermissiongroups" asp-route-userId="@user.Id" asp-route-username="@user.UserName" class="btn btn-default">گروه مجوز ها</a>
+                </td>
+            }
+        </tr>
+    }
+}
+else
+{
+    <tr>
+        <td colspan="11" class="text-center text-muted">
+            نتیجه‌ای یافت نشد
+        </td>
+    </tr>
+}

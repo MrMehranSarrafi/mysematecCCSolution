@@ -1,0 +1,199 @@
+﻿@model OrganizationVM
+<!-- ورژن  bootstrap is 3 and fontawesome is 4.7.0 . the copy is 4 and 5 -->
+@{
+    ViewData["Title"] = "افزودن سازمان جدید";
+    Layout = "_LayoutNew";
+    ViewBag.PageTitle = "سازمان جدید";
+}
+
+<!-- ✅ مقداردهی اولیه hidden field -->
+@{
+    string savedTedad = TempData["CardOrder_Tedad"]?.ToString() ?? "";
+    string savedCompanyId = TempData["CardOrder_CompanyId"]?.ToString() ?? "";
+    string savedAmount = TempData["CardOrder_Amount"]?.ToString() ?? "";
+}
+@section HeaderUpLeftIcons {
+    <a onclick="history.back()" class="icon circle-icon glyphicon glyphicon-arrow-left" data-toggle="tooltip" data-placement="bottom" title="بازگشت"></a>
+}
+<div class="container" style="margin-top: 20px;">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <i class="fa fa-building"></i> @ViewData["Title"]
+                    </h3>
+                </div>
+
+                <div class="panel-body">
+                    <form asp-action="Create" method="post" id="createOrgForm">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
+
+                        <div class="row">
+                            <!-- نام سازمان -->
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label asp-for="OrganizationName" class="required"></label>
+                                    <input asp-for="OrganizationName" class="form-control"
+                                           placeholder="نام سازمان را وارد کنید"
+                                           autofocus />
+                                    <span asp-validation-for="OrganizationName" class="text-danger small"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <!-- تلفن و موبایل -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Telephone"></label>
+                                    <input asp-for="Telephone" class="form-control"
+                                           placeholder="مثال: 021-12345678"
+                                           dir="ltr" />
+                                    <span asp-validation-for="Telephone" class="text-danger small"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Mobile"></label>
+                                    <input asp-for="Mobile" class="form-control"
+                                           placeholder="مثال: 09123456789"
+                                           dir="ltr" />
+                                    <span asp-validation-for="Mobile" class="text-danger small"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <!-- توضیحات -->
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label asp-for="Description"></label>
+                                    <textarea asp-for="Description" class="form-control"
+                                              rows="4"
+                                              placeholder="توضیحات اضافی درباره سازمان"></textarea>
+                                    <span asp-validation-for="Description" class="text-danger small"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- دکمه‌ها -->
+                        <div class="form-group" style="margin-top: 20px;">
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-success" id="btnSubmit" style="padding-left: 20px; padding-right: 20px; margin-left: 5px;">
+                                    <i class="fa fa-save"></i> ذخیره
+                                </button>
+
+                                <a asp-action="Index" class="btn btn-default" style="padding-left: 20px; padding-right: 20px; margin-right: 5px;">
+                                    <i class="fa fa-arrow-left"></i> بازگشت به لیست
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Validation Summary -->
+                        <div asp-validation-summary="All"
+                             class="alert alert-danger @(ViewData.ModelState.IsValid ? "hidden" : "")"
+                             style="margin-top: 15px;"
+                             id="validationSummary">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .required:after {
+            content: " *";
+            color: #dc3545;
+        }
+
+        .panel {
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            border-radius: 4px;
+        }
+
+        .panel-heading {
+            background-color: #337ab7;
+            color: white;
+            border-top-left-radius: 3px;
+            border-top-right-radius: 3px;
+        }
+
+        .form-control:focus {
+            border-color: #66afe9;
+            outline: 0;
+            box-shadow: inset 0 1px 1px rgba(0,0,0,0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+        }
+
+        /* برای RTL */
+        .form-control[dir="ltr"] {
+            text-align: left;
+            direction: ltr;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .row {
+            margin-bottom: 10px;
+        }
+
+        .fa {
+            margin-left: 5px;
+        }
+    </style>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        $(document).ready(function() {
+            // فرمت خودکار تلفن
+            $('#Telephone').on('input', function() {
+                let value = $(this).val().replace(/[^0-9\+\-\(\)\s]/g, '');
+                $(this).val(value);
+            });
+
+            // فرمت خودکار موبایل
+            $('#Mobile').on('input', function() {
+                let value = $(this).val().replace(/[^0-9]/g, '');
+                if (value.length > 11) {
+                    value = value.substring(0, 11);
+                }
+                $(this).val(value);
+            });
+
+            // جلوگیری از ارسال دوباره فرم
+            $('#createOrgForm').on('submit', function() {
+                var form = $(this);
+                // بررسی client-side validation
+                if (!form.valid()) {
+                    return;
+                }
+                $('#btnSubmit').prop('disabled', true)
+                    .html('<i class="fa fa-spinner fa-spin"></i> در حال ذخیره...');
+            });
+
+            // فعال کردن کلیک Enter برای فیلدها
+            $('input, textarea').keydown(function(e) {
+                if (e.keyCode === 13 && !$(this).is('textarea')) {
+                    e.preventDefault();
+                    var inputs = $(this).closest('form').find(':input:visible');
+                    var next = inputs.eq(inputs.index(this) + 1);
+                    if (next.length) {
+                        next.focus();
+                    } else {
+                        $(this).closest('form').submit();
+                    }
+                }
+            });
+        });
+    </script>
+}

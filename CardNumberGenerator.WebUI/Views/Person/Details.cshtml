@@ -1,0 +1,62 @@
+﻿@model PersonVM?
+@{
+    ViewData["Title"] = "مشاهده اطلاعات شخص";
+}
+@{
+    Layout = "_LayoutNew";
+    ViewBag.PageTitle = "مشاهده اطلاعات شخص";
+}
+@section HeaderUpLeftIcons {
+    <a onclick="history.back()" class="icon circle-icon glyphicon glyphicon-arrow-left" data-toggle="tooltip" data-placement="bottom" title="بازگشت"></a>
+}
+<input type="hidden" asp-for="Id" />
+<div class="form-group">
+    <label asp-for="FirstName" class="control-label"></label>
+    <input asp-for="FirstName" class="form-control" readonly />
+
+</div>
+<div>
+    <label asp-for="LastName" class="control-label"></label>
+    <input asp-for="LastName" class="form-control" readonly />
+
+</div>
+<div>
+    <label asp-for="Mobile" class="control-label"></label>
+    <input asp-for="Mobile" class="form-control" readonly />
+
+</div>
+<div>
+    <label asp-for="Phone" class="control-label"></label>
+    <input asp-for="Phone" class="form-control" readonly />
+
+</div>
+<div>
+    <label asp-for="NationalCode" class="control-label"></label>
+    <input asp-for="NationalCode" class="form-control" readonly />
+
+</div>
+<div>
+    <label asp-for="JobPlace" class="control-label"></label>
+    <input asp-for="JobPlace" class="form-control" readonly />
+
+</div>
+
+
+<div class="form-group">
+    <label asp-for="BirthDateFa" class="control-label"></label>
+    <input asp-for="BirthDateFa" class="form-control" readonly />
+
+</div>
+<div class="form-group">
+    <label asp-for="CompanyId" class="control-label">  شرکت</label>
+    <input type="text" asp-for="CompanyId" class="form-control" value="@Model.Company?.CompanyInfo" readonly />
+</div>
+<div class="form-group">
+    <label asp-for="GivId" class="control-label">  </label>
+    <input  asp-for="GivId" class="form-control"  readonly />
+   
+</div>
+
+<a asp-action="Edit" asp-route-Id="@Model.Id" asp-route-returnUrl="@ViewBag.returnUrl" class="btn btn-sm btn-warning">Edit</a>
+<a asp-action="Index" class="btn brn-secondary mt-2" style="background-color: aliceblue;">لیست اشخاص</a>
+<button type="button" class="btn btn-secondary" onclick="history.back()">بازگشت</button>
