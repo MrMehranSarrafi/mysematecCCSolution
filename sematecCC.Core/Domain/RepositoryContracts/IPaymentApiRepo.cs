@@ -1,4 +1,4 @@
-﻿namespace CardNoGenerator.Core;
+﻿namespace SematecCC.Core;
 
 public interface IPaymentApiRepo
 {

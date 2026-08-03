@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CardNoGenerator.Core;
+namespace SematecCC.Core;
 
 public class ChangePasswordDto
 {

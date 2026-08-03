@@ -1,4 +1,4 @@
-﻿namespace CardNoGenerator.WebUI;
+﻿namespace SematecCC.WebUI;
 
 public class OperationResultViewModel
 {

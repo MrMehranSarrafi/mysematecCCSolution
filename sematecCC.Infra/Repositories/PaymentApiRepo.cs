@@ -1,12 +1,12 @@
-﻿using CardNoGenerator.Core;
+﻿using SematecCC.Core;
 using Microsoft.EntityFrameworkCore;
 
-namespace CardNoGenerator.Infra;
+namespace SematecCC.Infra;
 
 public class PaymentApiRepo : IPaymentApiRepo
 {
-    private readonly CardNoGeneratorDbContext _db;
-    public PaymentApiRepo(CardNoGeneratorDbContext db)
+    private readonly SematecCCDbContext _db;
+    public PaymentApiRepo(SematecCCDbContext db)
     {
         _db = db;
     }

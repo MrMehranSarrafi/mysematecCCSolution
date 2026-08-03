@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using static System.Net.Mime.MediaTypeNames;
 
-namespace CardNoGenerator.Core;
+namespace SematecCC.Core;
 
 public class CardOrder : AuditingBaseEntity
 {

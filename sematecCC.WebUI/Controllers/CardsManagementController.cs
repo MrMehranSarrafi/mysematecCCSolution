@@ -1,10 +1,10 @@
-﻿using CardNoGenerator.Core;
-using CardNoGenerator.Core.Services;
+﻿using SematecCC.Core;
+using SematecCC.Core.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace CardNoGenerator.WebUI.Controllers;
+namespace SematecCC.WebUI.Controllers;
 
 ////NOTE: این attribute فقط روی کنترلر یا اکشن کار می‌کند
 [Authorize]//If not logged-in, then go to login page defined in program.cs

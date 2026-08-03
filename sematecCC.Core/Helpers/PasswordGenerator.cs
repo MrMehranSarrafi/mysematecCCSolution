@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 
-namespace CardNoGenerator.Core;
+namespace SematecCC.Core;
 
 internal class PasswordGenerator
 {

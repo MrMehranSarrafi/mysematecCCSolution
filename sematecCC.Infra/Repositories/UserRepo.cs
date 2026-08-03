@@ -1,20 +1,20 @@
-﻿using CardNoGenerator.Core;
+﻿using SematecCC.Core;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 using System.Security.Claims;
 
-namespace CardNoGenerator.Infra;
+namespace SematecCC.Infra;
 
 public class UserRepo : IUserRepo
 {
 
     private readonly UserManager<ApplicationUser> _userManager;
-    private readonly CardNoGeneratorDbContext _db;
+    private readonly SematecCCDbContext _db;
     private readonly RoleManager<ApplicationRole> _roleManager;
     private readonly SignInManager<ApplicationUser> _signInManager;  // ✅ درست
 
-    public UserRepo(UserManager<ApplicationUser> userManager, CardNoGeneratorDbContext db, RoleManager<ApplicationRole> roleManager, SignInManager<ApplicationUser> signInManager)
+    public UserRepo(UserManager<ApplicationUser> userManager, SematecCCDbContext db, RoleManager<ApplicationRole> roleManager, SignInManager<ApplicationUser> signInManager)
     {
         _userManager = userManager;
         _db = db;

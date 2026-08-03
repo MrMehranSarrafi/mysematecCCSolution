@@ -1,9 +1,9 @@
-﻿using CardNoGenerator.Core;
-using CardNoGenerator.Core.Services;
+﻿using SematecCC.Core;
+using SematecCC.Core.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CardNoGenerator.WebUI.Controllers;
+namespace SematecCC.WebUI.Controllers;
 
 [Authorize]
 public class OrganizationController : MyControllersBase

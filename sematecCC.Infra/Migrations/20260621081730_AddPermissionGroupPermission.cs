@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace CardNoGenerator.Infra.Migrations
+namespace SematecCC.Infra.Migrations
 {
     /// <inheritdoc />
     public partial class AddPermissionGroupPermission : Migration

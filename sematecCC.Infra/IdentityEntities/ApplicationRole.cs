@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace CardNoGenerator.Infra; 
+namespace SematecCC.Infra; 
 
 public class ApplicationRole : IdentityRole<int>
 {

@@ -1,13 +1,13 @@
-﻿using CardNoGenerator.Core;
+﻿using SematecCC.Core;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace CardNoGenerator.Infra;
+namespace SematecCC.Infra;
 
 public class CompanyRepo : ICompanyRepo
 {
-    private readonly CardNoGeneratorDbContext _db;
-    public CompanyRepo(CardNoGeneratorDbContext db)
+    private readonly SematecCCDbContext _db;
+    public CompanyRepo(SematecCCDbContext db)
     {
         _db = db;
     }

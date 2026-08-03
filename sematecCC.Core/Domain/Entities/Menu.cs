@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CardNoGenerator.Core;
+namespace SematecCC.Core;
 public class Menu    
 {
     public int Id { get; set; }

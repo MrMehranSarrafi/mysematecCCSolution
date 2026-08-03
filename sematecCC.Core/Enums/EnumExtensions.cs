@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
-namespace CardNoGenerator.Core;
+namespace SematecCC.Core;
 
 public static class EnumExtensions
 {

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.Design;
 
-namespace CardNoGenerator.Core;
+namespace SematecCC.Core;
 
 public interface IUserRepo
 {

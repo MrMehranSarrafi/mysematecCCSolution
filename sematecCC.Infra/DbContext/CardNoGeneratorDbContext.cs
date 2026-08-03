@@ -1,14 +1,14 @@
-﻿using CardNoGenerator.Core;
+﻿using SematecCC.Core;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace CardNoGenerator.Infra;
+namespace SematecCC.Infra;
 
-public class CardNoGeneratorDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, int>//DbContext
+public class SematecCCDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, int>//DbContext
 {
     //IdentityUser
-    public CardNoGeneratorDbContext(DbContextOptions<CardNoGeneratorDbContext> options) : base(options)
+    public SematecCCDbContext(DbContextOptions<SematecCCDbContext> options) : base(options)
     {
 
     }

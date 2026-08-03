@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace CardNoGenerator.Core;
+namespace SematecCC.Core;
 
 // وضعیت کارت
 //public enum CardStatus1 : byte

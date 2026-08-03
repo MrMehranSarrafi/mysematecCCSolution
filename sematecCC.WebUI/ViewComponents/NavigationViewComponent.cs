@@ -1,6 +1,6 @@
-﻿using CardNoGenerator.Core.Services;
+﻿using SematecCC.Core.Services;
 using Microsoft.AspNetCore.Mvc;
-namespace CardNoGenerator.WebUI.ViewComponents;
+namespace SematecCC.WebUI.ViewComponents;
 
 public class NavigationViewComponent: ViewComponent
 {

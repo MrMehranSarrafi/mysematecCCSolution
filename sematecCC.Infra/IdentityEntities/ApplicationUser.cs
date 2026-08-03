@@ -1,9 +1,9 @@
-﻿using CardNoGenerator.Core;
+﻿using SematecCC.Core;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CardNoGenerator.Infra;
+namespace SematecCC.Infra;
 
 public class ApplicationUser : IdentityUser<int>
 {

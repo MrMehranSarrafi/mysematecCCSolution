@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CardNoGenerator.Core;
+namespace SematecCC.Core;
 public class AuditingBaseEntity
 {
     [Column(Order = 1)] // اول

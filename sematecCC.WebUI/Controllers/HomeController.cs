@@ -1,9 +1,9 @@
-﻿using CardNoGenerator.Core.Services;
+﻿using SematecCC.Core.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace CardNumberGenerator.WebUI.Controllers;
+namespace SematecCC.WebUI.Controllers;
 
 public class HomeController : Controller
 {

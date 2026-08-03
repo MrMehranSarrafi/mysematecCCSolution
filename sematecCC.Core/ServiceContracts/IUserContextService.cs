@@ -1,4 +1,4 @@
-﻿namespace CardNoGenerator.Core;//Related to Web UI, Not Repo. Core is dependant of both Repo and UI
+﻿namespace SematecCC.Core;//Related to Web UI, Not Repo. Core is dependant of both Repo and UI
 
 public interface IUserContextService
 {

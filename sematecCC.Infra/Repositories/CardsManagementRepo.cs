@@ -1,15 +1,15 @@
-﻿using CardNoGenerator.Core;
+﻿using SematecCC.Core;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Data;
 
-namespace CardNoGenerator.Infra;
+namespace SematecCC.Infra;
 
 public class CardsManagementRepo : ICardsManagementRepo
 {
-    private readonly CardNoGeneratorDbContext _db;
-    public CardsManagementRepo(CardNoGeneratorDbContext db)
+    private readonly SematecCCDbContext _db;
+    public CardsManagementRepo(SematecCCDbContext db)
     {
         _db = db;
     }

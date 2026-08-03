@@ -1,7 +1,7 @@
-﻿using CardNoGenerator.Core;
+﻿using SematecCC.Core;
 using System.Security.Claims;
 
-namespace CardNoGenerator.WebUI;
+namespace SematecCC.WebUI;
 
 public static class ClaimsPrincipalExtensions
 {

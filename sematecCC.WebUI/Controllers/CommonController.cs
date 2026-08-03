@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace CardNoGenerator.WebUI.Controllers;
+namespace SematecCC.WebUI.Controllers;
 
 public class CommonController : Controller
 {

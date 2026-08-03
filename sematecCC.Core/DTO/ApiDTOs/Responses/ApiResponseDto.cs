@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace CardNoGenerator.Core;
+namespace SematecCC.Core;
 
 public class ApiResponseDto<TDataApiResponse>
 {

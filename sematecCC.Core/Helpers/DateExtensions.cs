@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using System.Text.RegularExpressions;
 
-namespace CardNoGenerator.Core;
+namespace SematecCC.Core;
 
 public static class DateExtensions
 {

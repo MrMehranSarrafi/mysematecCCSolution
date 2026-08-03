@@ -1,8 +1,8 @@
-﻿using CardNoGenerator.Core;
-using CardNoGenerator.WebUI.CustomValidators;
+﻿using SematecCC.Core;
+using SematecCC.WebUI.CustomValidators;
 using System.ComponentModel.DataAnnotations;
 
-namespace CardNoGenerator.WebUI;
+namespace SematecCC.WebUI;
 
 public  class PersonVM
 {         

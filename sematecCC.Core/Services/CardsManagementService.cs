@@ -1,8 +1,8 @@
-﻿using CardNoGenerator.Core.Helpers;
+﻿using SematecCC.Core.Helpers;
 using OfficeOpenXml;
 using System.Text;
 
-namespace CardNoGenerator.Core.Services;
+namespace SematecCC.Core.Services;
 
 public class CardsManagementService : MyServicesBase
 {

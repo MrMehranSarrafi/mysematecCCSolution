@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;//Reflection
 
-namespace CardNoGenerator.Core;
+namespace SematecCC.Core;
 
 
 //public enum ContactType : byte

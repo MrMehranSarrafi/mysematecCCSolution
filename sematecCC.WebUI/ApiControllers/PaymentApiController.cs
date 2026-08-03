@@ -1,6 +1,6 @@
-﻿using CardNoGenerator.Core;
-using CardNoGenerator.Core.DTO;
-using CardNoGenerator.Core.Services;
+﻿using SematecCC.Core;
+using SematecCC.Core.DTO;
+using SematecCC.Core.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +9,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace CardNoGenerator.WebUI.ApiControllers;
+namespace SematecCC.WebUI.ApiControllers;
 
 [Route("api/Payment")]
 [ApiController]

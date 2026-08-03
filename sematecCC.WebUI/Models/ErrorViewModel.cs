@@ -1,4 +1,4 @@
-namespace CardNumberGenerator.WebUI;
+namespace SematecCC.WebUI;
 
 public class ErrorViewModel
 {

@@ -1,10 +1,10 @@
-﻿using CardNoGenerator.Core;
+﻿using SematecCC.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace CardNoGenerator.Infra;
+namespace SematecCC.Infra;
 
 public class TransactionCleanupService : BackgroundService
 {
@@ -23,7 +23,7 @@ public class TransactionCleanupService : BackgroundService
             _logger.LogInformation("TransactionCleanupService started at {time}", DateTime.Now);
 
             using var scope = _scopeFactory.CreateScope();
-            var dbContext = scope.ServiceProvider.GetRequiredService<CardNoGeneratorDbContext>();
+            var dbContext = scope.ServiceProvider.GetRequiredService<SematecCCDbContext>();
             var cardTransactions = await dbContext.CardTransactions
                             .Include(ct => ct.Card)
                             .Where(ct => ct.Status == CardTransactionsStatus.NewOrInitial
@@ -70,7 +70,7 @@ stoppingToken به شما امکان می‌دهد تا اجرای کد را د�
 بهترین روش:
 استفاده از Task.Delay همراه با await بهترین روش برای ایجاد تأخیر در کدهای async/await است، زیرا این روش غیر مسدود کننده است و به صورت کارآمد از منابع سیستم استفاده می‌کند.
      */
-    //private async Task CancelSpendJob(CardNoGeneratorDbContext dbContext, int transactionId)
+    //private async Task CancelSpendJob(SematecCCDbContext dbContext, int transactionId)
     //{
     //    using (var transaction = dbContext.Database.BeginTransaction())
     //    {
@@ -96,7 +96,7 @@ stoppingToken به شما امکان می‌دهد تا اجرای کد را د�
     //        }
     //    }
     //}
-    private async Task CancelSpendJob(CardNoGeneratorDbContext dbContext, int transactionId)
+    private async Task CancelSpendJob(SematecCCDbContext dbContext, int transactionId)
     {
         await using var transaction = await dbContext.Database.BeginTransactionAsync();
 

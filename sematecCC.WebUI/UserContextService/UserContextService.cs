@@ -1,7 +1,7 @@
-﻿//using CardNoGenerator.Core;
+﻿//using SematecCC.Core;
 //using System.Security.Claims;
 
-//namespace CardNoGenerator.WebUI.Models
+//namespace SematecCC.WebUI.Models
 //{
 //    public class UserContextService : IUserContextService
 //    {
@@ -64,9 +64,9 @@
 //        }
 //    }
 //}
-using CardNoGenerator.Core;
+using SematecCC.Core;
 using System.Security.Claims;
-namespace CardNoGenerator.WebUI;
+namespace SematecCC.WebUI;
 
 public class UserContextService : IUserContextService
 {

@@ -1,4 +1,4 @@
-﻿namespace CardNoGenerator.Core.DTO;
+﻿namespace SematecCC.Core.DTO;
 
 public class CardStatusRequestDto
 {

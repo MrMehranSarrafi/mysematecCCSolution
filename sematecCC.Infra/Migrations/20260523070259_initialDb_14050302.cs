@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace CardNoGenerator.Infra.Migrations
+namespace SematecCC.Infra.Migrations
 {
     /// <inheritdoc />
     public partial class initialDb_14050302 : Migration

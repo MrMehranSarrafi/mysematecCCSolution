@@ -1,12 +1,12 @@
-﻿using CardNoGenerator.Core;
+﻿using SematecCC.Core;
 using Microsoft.EntityFrameworkCore;
 
-namespace CardNoGenerator.Infra;
+namespace SematecCC.Infra;
 
 public class PersonRepo : IPersonRepo
 {
-    private readonly CardNoGeneratorDbContext _db;
-    public PersonRepo(CardNoGeneratorDbContext db)
+    private readonly SematecCCDbContext _db;
+    public PersonRepo(SematecCCDbContext db)
     {
         _db = db;
     }

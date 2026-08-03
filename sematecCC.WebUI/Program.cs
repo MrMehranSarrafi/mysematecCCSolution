@@ -1,7 +1,7 @@
-using CardNoGenerator.Core;
-using CardNoGenerator.Core.Services;
-using CardNoGenerator.Infra;
-using CardNoGenerator.WebUI;
+using SematecCC.Core;
+using SematecCC.Core.Services;
+using SematecCC.Infra;
+using SematecCC.WebUI;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
@@ -20,7 +20,7 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<CardsManagementService, CardsManagementService>();
 builder.Services.AddScoped<ICardsManagementRepo, CardsManagementRepo>();
-builder.Services.AddDbContext<CardNoGeneratorDbContext>(options =>
+builder.Services.AddDbContext<SematecCCDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
@@ -33,7 +33,7 @@ builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
     options.Password.RequireUppercase = false;
     options.Password.RequireLowercase = false;
 })
-.AddEntityFrameworkStores<CardNoGeneratorDbContext>()
+.AddEntityFrameworkStores<SematecCCDbContext>()
 .AddDefaultTokenProviders()//To verify emails and phone numbers and .. 
 .AddErrorDescriber<PersianIdentityErrorDescriber>();// ← اضافه کردن پیام‌های فارسی
 

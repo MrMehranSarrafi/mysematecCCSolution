@@ -1,4 +1,4 @@
-﻿namespace CardNoGenerator.Core.Services;
+﻿namespace SematecCC.Core.Services;
 
 public class MyServicesBase
 {

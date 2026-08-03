@@ -1,7 +1,7 @@
-﻿using CardNoGenerator.Core.Helpers;
+﻿using SematecCC.Core.Helpers;
 using System.Transactions;
 
-namespace CardNoGenerator.Core.Services;
+namespace SematecCC.Core.Services;
 
 public class UserService : MyServicesBase /*: IUserService*/
 {

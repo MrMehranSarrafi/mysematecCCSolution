@@ -1,7 +1,7 @@
-﻿using CardNoGenerator.Core;
+﻿using SematecCC.Core;
 using System.Globalization;
 
-namespace CardNoGenerator.WebUI;
+namespace SematecCC.WebUI;
 
 public class CardTransactionVM
 {

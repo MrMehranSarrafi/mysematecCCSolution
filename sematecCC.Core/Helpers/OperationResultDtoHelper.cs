@@ -1,4 +1,4 @@
-﻿namespace CardNoGenerator.Core.Helpers;
+﻿namespace SematecCC.Core.Helpers;
 
 public static class OperationResultHelper
 {

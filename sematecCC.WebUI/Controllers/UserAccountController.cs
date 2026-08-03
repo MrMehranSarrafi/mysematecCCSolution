@@ -1,11 +1,11 @@
-﻿using CardNoGenerator.Core;
-using CardNoGenerator.Core.Services;
-using CardNumberGenerator.WebUI.Controllers;
+﻿using SematecCC.Core;
+using SematecCC.Core.Services;
+using SematecCC.WebUI.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace CardNoGenerator.WebUI.Controllers;
+namespace SematecCC.WebUI.Controllers;
 
 public class UserAccountController : MyControllersBase
 {

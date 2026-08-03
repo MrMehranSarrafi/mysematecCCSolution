@@ -1,7 +1,7 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
 
-namespace CardNoGenerator.WebUI;
+namespace SematecCC.WebUI;
 
 public class ChangePasswordVM
 {

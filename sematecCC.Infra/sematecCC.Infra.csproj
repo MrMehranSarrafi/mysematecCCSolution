@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-	  <RootNamespace> CardNoGenerator.Infra</RootNamespace>
+	  <RootNamespace> SematecCC.Infra</RootNamespace>
 
   </PropertyGroup>
 
@@ -28,11 +28,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CardNoGenerator.Core\sematecCC.Core.csproj" />
+    <ProjectReference Include="..\SematecCC.Core\sematecCC.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="CardNoGenerator\Infra\" />
+    <Folder Include="SematecCC\Infra\" />
   </ItemGroup>
 
 </Project>

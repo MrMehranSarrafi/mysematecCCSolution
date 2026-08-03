@@ -1,6 +1,6 @@
-﻿using CardNoGenerator.Core.Helpers;
+﻿using SematecCC.Core.Helpers;
 
-namespace CardNoGenerator.Core.Services;
+namespace SematecCC.Core.Services;
 
 public class PersonService
 {
