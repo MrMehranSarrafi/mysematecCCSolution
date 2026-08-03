@@ -1,5 +1,6 @@
-﻿using SematecCC.Core;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Core.Domain.Entities;
+using Core.Domain.RepositoryContracts;
 
 namespace SematecCC.Infra;
 

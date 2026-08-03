@@ -8,16 +8,19 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Compile Remove="Helpers\ToPersian().cs" />
+		<Compile Remove="Core\Helpers\ToPersian().cs" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="DTO\ViewModels\" />
-		<Folder Include="Exceptions\" />
+		<Folder Include="Application\DTO\ViewModels\" />
+		<Folder Include="Application\Mappers\" />
+		<Folder Include="Application\Validators\" />
+		<Folder Include="Application\UseCases\" />
+		<Folder Include="Core\Exceptions\" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Include="Helpers\ToPersian%28%29.cs" />
+		<None Include="Core\Helpers\ToPersian%28%29.cs" />
 	</ItemGroup>
 	<ItemGroup>
 		<Reference Include="EPPlus">

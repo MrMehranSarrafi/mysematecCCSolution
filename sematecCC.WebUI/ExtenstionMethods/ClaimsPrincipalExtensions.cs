@@ -1,4 +1,4 @@
-﻿using SematecCC.Core;
+﻿using Core.Enums;
 using System.Security.Claims;
 
 namespace SematecCC.WebUI;

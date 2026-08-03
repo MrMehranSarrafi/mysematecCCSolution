@@ -1,5 +1,11 @@
-﻿using SematecCC.Core;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Core.Domain.Entities;
+using Core.Domain.RepositoryContracts;
+using Core.Enums;
+using Core.Helpers;
+using Application.DTO.ApiDTOs;
+using Application.DTO.UserDtos;
+using Application.DTO.ApiDTOs.Responses;
 
 namespace SematecCC.Infra;
 

@@ -1,9 +1,13 @@
-﻿using SematecCC.Core;
-using SematecCC.Core.Services;
-using SematecCC.WebUI.Controllers;
+﻿using SematecCC.WebUI.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Core.Domain.Entities;
+using Core.Services;
+using Core.ServiceContracts;
+using Application.DTO;
+using Application.DTO.Permissions;
+using Application.DTO.UserDtos;
 
 namespace SematecCC.WebUI.Controllers;
 

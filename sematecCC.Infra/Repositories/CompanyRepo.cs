@@ -1,6 +1,8 @@
-﻿using SematecCC.Core;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Core.Domain.Entities;
+using Core.Domain.RepositoryContracts;
+using Application.DTO;
 
 namespace SematecCC.Infra;
 

@@ -1,7 +1,8 @@
-﻿using SematecCC.Core;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Core.Domain.Entities;
+using Core.Enums;
 
 namespace SematecCC.Infra;
 

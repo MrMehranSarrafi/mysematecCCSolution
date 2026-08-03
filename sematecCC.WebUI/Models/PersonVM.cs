@@ -1,4 +1,4 @@
-﻿using SematecCC.Core;
+﻿using Core.Domain.Entities;
 using SematecCC.WebUI.CustomValidators;
 using System.ComponentModel.DataAnnotations;
 

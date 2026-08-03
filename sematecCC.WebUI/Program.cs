@@ -1,5 +1,3 @@
-using SematecCC.Core;
-using SematecCC.Core.Services;
 using SematecCC.Infra;
 using SematecCC.WebUI;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -11,6 +9,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Core.Domain.RepositoryContracts;
+using Core.Services;
+using Core.ServiceContracts;
 
 
 var builder = WebApplication.CreateBuilder(args);
