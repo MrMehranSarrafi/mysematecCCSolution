@@ -22,8 +22,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CardNoGenerator.Core\sematecCC.Core.csproj" />
-    <ProjectReference Include="..\CardNoGenerator.Infra\sematec.Infra.csproj" />
+    <ProjectReference Include="..\CardNoGenerator.Core\givCC.Core.csproj" />
+    <ProjectReference Include="..\CardNoGenerator.Infra\givCC.Infra.csproj" />
   </ItemGroup>
 
   <ItemGroup>
