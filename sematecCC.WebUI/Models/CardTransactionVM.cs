@@ -1,4 +1,4 @@
-﻿using Core.Enums;
+﻿using Domain.Enums;
 using System.Globalization;
 
 namespace SematecCC.WebUI;

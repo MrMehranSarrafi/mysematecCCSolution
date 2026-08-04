@@ -2,8 +2,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Core.Enums;
 using Core.Domain.Entities;
+using Domain.Enums;
 
 namespace SematecCC.Infra;
 

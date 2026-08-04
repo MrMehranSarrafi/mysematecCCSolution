@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Core.Enums;
+namespace Domain.Enums;
 
 // وضعیت کارت
 //public enum CardStatus1 : byte

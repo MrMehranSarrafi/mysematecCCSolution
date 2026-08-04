@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 
-namespace Core.Helpers;
+namespace Domain.Helpers;
 
 internal class PasswordGenerator
 {

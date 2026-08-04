@@ -2,12 +2,12 @@
 using System.Text;
 using Core.Domain.Entities;
 using Core.Domain.RepositoryContracts;
-using Core.Enums;
-using Core.Helpers;
-using Core.ServiceContracts;
 using Application.DTO;
+using Domain.Enums;
+using Domain.Helpers;
+using Domain.ServiceContracts;
 
-namespace Core.Services;
+namespace Domain.Services;
 
 public class CardsManagementService : MyServicesBase
 {

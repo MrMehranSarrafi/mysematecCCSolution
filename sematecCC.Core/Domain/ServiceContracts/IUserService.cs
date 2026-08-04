@@ -1,7 +1,7 @@
 ﻿using Application.DTO;
 using Application.DTO.UserDtos;
 
-namespace Core.ServiceContracts;
+namespace Domain.ServiceContracts;
 
 public interface IUserService
 {

@@ -1,10 +1,10 @@
 ﻿using Application.DTO;
 using Core.Domain.Entities;
 using Core.Domain.RepositoryContracts;
-using Core.Helpers;
-using Core.ServiceContracts;
+using Domain.Helpers;
+using Domain.ServiceContracts;
 
-namespace Core.Services;
+namespace Domain.Services;
 
 public class CompanyService
 {

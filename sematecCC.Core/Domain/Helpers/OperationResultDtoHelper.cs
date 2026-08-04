@@ -1,6 +1,6 @@
 ﻿using Application.DTO;
 
-namespace Core.Helpers;
+namespace Domain.Helpers;
 
 public static class OperationResultHelper
 {

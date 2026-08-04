@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using System.Text.RegularExpressions;
 
-namespace Core.Helpers;
+namespace Domain.Helpers;
 
 public static class DateExtensions
 {

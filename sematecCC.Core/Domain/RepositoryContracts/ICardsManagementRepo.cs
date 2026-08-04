@@ -1,6 +1,6 @@
 ﻿using Application.DTO;
 using Core.Domain.Entities;
-using Core.Enums;
+using Domain.Enums;
 
 namespace Core.Domain.RepositoryContracts;
 

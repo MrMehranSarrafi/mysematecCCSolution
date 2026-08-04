@@ -5,12 +5,12 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Core.Enums;
-using Core.Services;
 using Application.DTO;
 using Application.DTO.ApiDTOs;
 using Application.DTO.UserDtos;
 using Application.DTO.ApiDTOs.Responses;
+using Domain.Enums;
+using Domain.Services;
 
 namespace SematecCC.WebUI.ApiControllers;
 

@@ -1,5 +1,5 @@
 ﻿using Core.Domain.Entities;
-using Core.Enums;
+using Domain.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace SematecCC.WebUI;

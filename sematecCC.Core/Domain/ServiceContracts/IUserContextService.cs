@@ -1,6 +1,6 @@
-﻿using Core.Enums;
+﻿using Domain.Enums;
 
-namespace Core.ServiceContracts;//Related to Web UI, Not Repo. Core is dependant of both Repo and UI
+namespace Domain.ServiceContracts;//Related to Web UI, Not Repo. Core is dependant of both Repo and UI
 
 public interface IUserContextService
 {

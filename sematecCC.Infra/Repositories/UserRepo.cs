@@ -4,9 +4,9 @@ using System.Data;
 using System.Security.Claims;
 using Core.Domain.Entities;
 using Core.Domain.RepositoryContracts;
-using Core.Enums;
 using Application.DTO.Permissions;
 using Application.DTO.UserDtos;
+using Domain.Enums;
 
 namespace SematecCC.Infra;
 

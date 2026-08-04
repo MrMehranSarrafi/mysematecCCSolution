@@ -1,6 +1,6 @@
 ﻿using Application.DTO;
 
-namespace Core.Services;
+namespace Domain.Services;
 
 public class MyServicesBase
 {

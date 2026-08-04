@@ -4,9 +4,9 @@ using Microsoft.Extensions.Configuration;
 using System.Data;
 using Core.Domain.Entities;
 using Core.Domain.RepositoryContracts;
-using Core.Enums;
-using Core.Helpers;
 using Application.DTO;
+using Domain.Enums;
+using Domain.Helpers;
 
 namespace SematecCC.Infra;
 

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Core.Domain.RepositoryContracts;
-using Core.Services;
-using Core.ServiceContracts;
+using Domain.ServiceContracts;
+using Domain.Services;
 
 
 var builder = WebApplication.CreateBuilder(args);

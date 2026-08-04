@@ -3,12 +3,12 @@ using Application.DTO.Permissions;
 using Application.DTO.UserDtos;
 using Core.Domain.Entities;
 using Core.Domain.RepositoryContracts;
-using Core.Enums;
-using Core.Helpers;
-using Core.ServiceContracts;
+using Domain.Enums;
+using Domain.Helpers;
+using Domain.ServiceContracts;
 using System.Transactions;
 
-namespace Core.Services;
+namespace Domain.Services;
 
 public class UserService : MyServicesBase /*: IUserService*/
 {

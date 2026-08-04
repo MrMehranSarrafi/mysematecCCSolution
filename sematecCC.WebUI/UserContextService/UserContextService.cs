@@ -64,8 +64,8 @@
 //        }
 //    }
 //}
-using Core.Enums;
-using Core.ServiceContracts;
+using Domain.Enums;
+using Domain.ServiceContracts;
 using System.Security.Claims;
 namespace SematecCC.WebUI;
 

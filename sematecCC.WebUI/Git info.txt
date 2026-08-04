@@ -1,8 +1,1 @@
-in cardorderdetails for buttons with classes class="btn btn-primary btn-sm", i removed btn-sm.
-I added to Tutorial files 12 to 15
-----------------------------------
-2:1405-05-05
- I revised permission about setExpireDAteAll on edit and comfirm too.
- In CardOrderDetails, disabled checkbox for expired
- ---------------------------------
- renamed the application and database to givCC(Customer Club or Card Creaate)
+Core project to folders Application and Domain

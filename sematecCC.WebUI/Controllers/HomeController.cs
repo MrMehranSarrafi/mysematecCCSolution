@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using Core.Services;
+using Domain.Services;
 
 namespace SematecCC.WebUI.Controllers;
 

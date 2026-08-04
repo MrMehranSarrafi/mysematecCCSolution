@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;//Reflection
 
-namespace Core.Enums;
+namespace Domain.Enums;
 
 
 //public enum ContactType : byte

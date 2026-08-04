@@ -3,10 +3,10 @@ using Application.DTO.ApiDTOs.Responses;
 using Application.DTO.UserDtos;
 using Core.Domain.Entities;
 using Core.Domain.RepositoryContracts;
-using Core.Enums;
-using Core.Helpers;
+using Domain.Enums;
+using Domain.Helpers;
 
-namespace Core.Services;
+namespace Domain.Services;
 
 public class PaymentApiService//: MyServicesBase
 {
