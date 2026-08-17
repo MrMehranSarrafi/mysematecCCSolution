@@ -12,6 +12,7 @@ using System.Text;
 using Core.Domain.RepositoryContracts;
 using Domain.ServiceContracts;
 using Domain.Services;
+using Persistence.DbContexts;
 
 
 var builder = WebApplication.CreateBuilder(args);

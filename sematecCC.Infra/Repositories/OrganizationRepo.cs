@@ -2,6 +2,7 @@
 using Core.Domain.Entities;
 using Core.Domain.RepositoryContracts;
 using Application.DTO;
+using Persistence.DbContexts;
 
 namespace SematecCC.Infra;
 

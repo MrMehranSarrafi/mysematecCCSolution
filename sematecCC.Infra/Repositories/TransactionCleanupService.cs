@@ -4,6 +4,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Core.Domain.Entities;
 using Domain.Enums;
+using Persistence.DbContexts;
 
 namespace SematecCC.Infra;
 

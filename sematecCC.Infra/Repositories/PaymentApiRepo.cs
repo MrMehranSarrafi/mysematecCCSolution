@@ -6,6 +6,7 @@ using Application.DTO.UserDtos;
 using Application.DTO.ApiDTOs.Responses;
 using Domain.Enums;
 using Domain.Helpers;
+using Persistence.DbContexts;
 
 namespace SematecCC.Infra;
 

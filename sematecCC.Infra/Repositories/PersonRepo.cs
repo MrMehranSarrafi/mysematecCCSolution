@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Core.Domain.Entities;
 using Core.Domain.RepositoryContracts;
+using Persistence.DbContexts;
 
 namespace SematecCC.Infra;
 

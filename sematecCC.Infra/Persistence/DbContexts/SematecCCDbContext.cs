@@ -3,8 +3,9 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Core.Domain.Entities;
 using Domain.Enums;
+using SematecCC.Infra;
 
-namespace SematecCC.Infra;
+namespace Persistence.DbContexts;
 
 public class SematecCCDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, int>//DbContext
 {
@@ -216,9 +217,9 @@ public class SematecCCDbContext : IdentityDbContext<ApplicationUser, Application
         modelBuilder.Entity<Card>(entity =>
         {
             entity.Property(c => c.Status).HasComment(@$" 
-                    {(byte)CardStatus.NewOrInitial}:{(CardStatus.NewOrInitial).GetDisplayAttributeValue()}
-                    {(byte)CardStatus.Verified}:{(CardStatus.Verified).GetDisplayAttributeValue()}
-                    {(byte)CardStatus.Canceled}:{(CardStatus.Canceled).GetDisplayAttributeValue()}");
+                    {(byte)CardStatus.NewOrInitial}:{CardStatus.NewOrInitial.GetDisplayAttributeValue()}
+                    {(byte)CardStatus.Verified}:{CardStatus.Verified.GetDisplayAttributeValue()}
+                    {(byte)CardStatus.Canceled}:{CardStatus.Canceled.GetDisplayAttributeValue()}");
 
         });
         modelBuilder.Entity<CardTransaction>(entity =>
@@ -236,19 +237,19 @@ public class SematecCCDbContext : IdentityDbContext<ApplicationUser, Application
 
 
             entity.Property(ct => ct.Status).HasComment(@$" 
-                {(byte)CardTransactionsStatus.NewOrInitial}:{(CardTransactionsStatus.NewOrInitial).GetDisplayAttributeValue()}
-                {(byte)CardTransactionsStatus.Verified}:{(CardTransactionsStatus.Verified).GetDisplayAttributeValue()} 
-                {(byte)CardTransactionsStatus.Canceled_timedout}:{(CardTransactionsStatus.Canceled_timedout).GetDisplayAttributeValue()} 
-                {(byte)CardTransactionsStatus.Canceled_Returned}:{(CardTransactionsStatus.Canceled_Returned).GetDisplayAttributeValue()}");
+                {(byte)CardTransactionsStatus.NewOrInitial}:{CardTransactionsStatus.NewOrInitial.GetDisplayAttributeValue()}
+                {(byte)CardTransactionsStatus.Verified}:{CardTransactionsStatus.Verified.GetDisplayAttributeValue()} 
+                {(byte)CardTransactionsStatus.Canceled_timedout}:{CardTransactionsStatus.Canceled_timedout.GetDisplayAttributeValue()} 
+                {(byte)CardTransactionsStatus.Canceled_Returned}:{CardTransactionsStatus.Canceled_Returned.GetDisplayAttributeValue()}");
 
         });
 
         modelBuilder.Entity<CardOrder>(entity =>
         {
             entity.Property(ct => ct.Status).HasComment(@$"
-                    {(byte)CardOrderStatus.NewOrInitial}:{(CardOrderStatus.NewOrInitial).GetDisplayAttributeValue()} 
-                    {(byte)CardOrderStatus.Verified}:{(CardOrderStatus.Verified).GetDisplayAttributeValue()}
-                    {(byte)CardOrderStatus.Canceled}:{(CardOrderStatus.Canceled).GetDisplayAttributeValue()} ");
+                    {(byte)CardOrderStatus.NewOrInitial}:{CardOrderStatus.NewOrInitial.GetDisplayAttributeValue()} 
+                    {(byte)CardOrderStatus.Verified}:{CardOrderStatus.Verified.GetDisplayAttributeValue()}
+                    {(byte)CardOrderStatus.Canceled}:{CardOrderStatus.Canceled.GetDisplayAttributeValue()} ");
 
         });
 
@@ -256,13 +257,13 @@ public class SematecCCDbContext : IdentityDbContext<ApplicationUser, Application
         {
             entity.Property(l => l.OperationId).
                 HasComment(@$"
-                        {(byte)LogOperationIdDescription.ConfirmCardOrder}:{(LogOperationIdDescription.ConfirmCardOrder).GetDescriptionAttributeValue()} 
-                        {(byte)LogOperationIdDescription.CancelCardOrder}:{(LogOperationIdDescription.CancelCardOrder).GetDescriptionAttributeValue()} 
-                        {(byte)LogOperationIdDescription.DisableCard}:{(LogOperationIdDescription.DisableCard).GetDescriptionAttributeValue()} 
-                        {(byte)LogOperationIdDescription.EnableCard}:{(LogOperationIdDescription.EnableCard).GetDescriptionAttributeValue()} 
-                        {(byte)LogOperationIdDescription.SetCardOwner}:{(LogOperationIdDescription.SetCardOwner).GetDescriptionAttributeValue()} 
-                        {(byte)LogOperationIdDescription.IncCardCredit}:{(LogOperationIdDescription.IncCardCredit).GetDescriptionAttributeValue()} 
-                        {(byte)LogOperationIdDescription.DecCardCredit}:{(LogOperationIdDescription.DecCardCredit).GetDescriptionAttributeValue()} 
+                        {(byte)LogOperationIdDescription.ConfirmCardOrder}:{LogOperationIdDescription.ConfirmCardOrder.GetDescriptionAttributeValue()} 
+                        {(byte)LogOperationIdDescription.CancelCardOrder}:{LogOperationIdDescription.CancelCardOrder.GetDescriptionAttributeValue()} 
+                        {(byte)LogOperationIdDescription.DisableCard}:{LogOperationIdDescription.DisableCard.GetDescriptionAttributeValue()} 
+                        {(byte)LogOperationIdDescription.EnableCard}:{LogOperationIdDescription.EnableCard.GetDescriptionAttributeValue()} 
+                        {(byte)LogOperationIdDescription.SetCardOwner}:{LogOperationIdDescription.SetCardOwner.GetDescriptionAttributeValue()} 
+                        {(byte)LogOperationIdDescription.IncCardCredit}:{LogOperationIdDescription.IncCardCredit.GetDescriptionAttributeValue()} 
+                        {(byte)LogOperationIdDescription.DecCardCredit}:{LogOperationIdDescription.DecCardCredit.GetDescriptionAttributeValue()} 
                         ");
         });
 
@@ -415,7 +416,7 @@ public class SematecCCDbContext : IdentityDbContext<ApplicationUser, Application
             .HasForeignKey(up => up.UserId)//fk
             .OnDelete(DeleteBehavior.Restrict);
 
-            entity.HasOne<Permission>(up => up.Permission)  // navigation property در UserPermission
+            entity.HasOne(up => up.Permission)  // navigation property در UserPermission
             .WithMany(p=>p.UserPermissions)//() if NO navigation  I have set
             .HasForeignKey(up => up.PermissionId)//fk
             .OnDelete(DeleteBehavior.Restrict);
