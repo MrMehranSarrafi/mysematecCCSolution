@@ -51,4 +51,6 @@ public interface ICardsManagementRepo
     public Task EnableCardOrder(int cardOrderId);
     public Task SetCardExpireDateFa(int cardId, string expireDateFa, int currentUserId);
     public Task SetAllCardsExpireDateFa(int cardOrderId, string expireDateFa,DateTime expireDate, int currentUserId);
+    Task<MemoryStream> GetCardsExcel(int cardOrderId, string? cardNo);
+    Task<MemoryStream> GetCardsCsv(int cardOrderId, string? cardNo);
 }

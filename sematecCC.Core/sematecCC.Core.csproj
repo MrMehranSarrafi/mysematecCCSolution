@@ -26,33 +26,21 @@
 		<Reference Include="EPPlus">
 			<HintPath>Lib\EPPlus.dll</HintPath>
 		</Reference>
-		<None Include="Lib\EPPlus.dll">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
 	</ItemGroup>
 	<ItemGroup>
 		<Reference Include="Microsoft.IO.RecyclableMemoryStream">
 			<HintPath>Lib\Microsoft.IO.RecyclableMemoryStream.dll</HintPath>
 		</Reference>
-		<None Include="Lib\Microsoft.IO.RecyclableMemoryStream.dll">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
 	</ItemGroup>
 	<ItemGroup>
 		<Reference Include="EPPlus.System.Drawing">
 			<HintPath>Lib\EPPlus.System.Drawing.dll</HintPath>
 		</Reference>
-		<None Include="Lib\EPPlus.System.Drawing.dll">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
 	</ItemGroup>
 	<ItemGroup>
 		<Reference Include="EPPlus.Interfaces">
 			<HintPath>Lib\EPPlus.Interfaces.dll</HintPath>
 		</Reference>
-		<None Include="Lib\EPPlus.Interfaces.dll">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
 	</ItemGroup>
 
 </Project>

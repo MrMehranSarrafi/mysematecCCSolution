@@ -1,11 +1,10 @@
-﻿using OfficeOpenXml;
-using System.Text;
+﻿using Application.DTO;
 using Core.Domain.Entities;
 using Core.Domain.RepositoryContracts;
-using Application.DTO;
 using Domain.Enums;
 using Domain.Helpers;
 using Domain.ServiceContracts;
+using System.Text;
 
 namespace Domain.Services;
 
@@ -53,71 +52,16 @@ public class CardsManagementService : MyServicesBase
                 result.Success = false;
                 enumValue = (ConfirmCardOrderResult)resultInt;
                 result.Message = enumValue.GetDescriptionAttributeValue();
-                //((ConfirmCardOrderResult)resultInt).GetDescriptionAttribute().ToString( );
             }
         }
         catch (Exception ex)
         {
-
-            //result.Success = false;
-            //result.Message = $" تایید سفارش کارت با خطا مواجه شد. \n  {ex.Message} \n {enumValue.GetDisplayName()}";
-
-            //result = Fail($" تایید سفارش کارت با خطا مواجه شد. \n  {ex.Message} \n {enumValue.GetDisplayName()}");
             result = OperationResultHelper.Fail($" تایید سفارش کارت با خطا مواجه شد. \n  {ex.Message} \n {enumValue.GetDisplayAttributeValue()}");
         }
         return result;
     }
 
     Random rnd = new Random();
-    //private async Task<List<CardDto>> GenerateCardsList(int cardOrderId, string companyID, int tedad)
-    //{
-    //    //Use StringBuilder ? بعدا
-    //    var list = new List<CardDto>();
-
-    //    var maxSerialNo = await _cardsManagementRepo.GetCardMaxSerialNo(companyID);//null returns 0
-    //    if (string.IsNullOrWhiteSpace(maxSerialNo))
-    //        maxSerialNo = "0000000";
-    //    int iSerialNo = int.Parse(maxSerialNo);
-    //    string serialNo = maxSerialNo;
-
-
-    //    for (int i = 1; i <= tedad; i++)
-    //    {
-    //        CardDto card = new CardDto();
-    //        serialNo = Format(iSerialNo + i);
-    //        card.SerialNo = serialNo; //iSerialNo.ToString("000"); or format ? سرچ کن
-    //        card.CardNo = companyID + serialNo + rnd.Next(0, 9);
-    //        card.Password = GeneratePassword();
-    //        card.RowNo = i;
-
-    //        list.Add(card);
-    //    }
-    //    return list;
-    //}
-    //private async Task<List<CardDto>> GenerateCardsList(int cardOrderId, string companyID, int tedad)
-    //{
-    //    var list = new List<CardDto>();
-
-    //    var maxSerialNo = await _cardsManagementRepo.GetCardMaxSerialNo(companyID);//null returns 0
-    //    if (string.IsNullOrWhiteSpace(maxSerialNo))
-    //        maxSerialNo = "0000000";
-    //    int iSerialNo = int.Parse(maxSerialNo);
-    //    string serialNo = maxSerialNo;
-
-    //    for (int i = 1; i <= tedad; i++)
-    //    {
-    //        CardDto card = new CardDto();
-    //        //serialNo = Format(iSerialNo + i);
-    //        serialNo = (iSerialNo + 1).ToString("D7");
-    //        card.SerialNo = serialNo; //iSerialNo.ToString("000"); or format ? سرچ کن
-    //        card.CardNo = companyID + serialNo + rnd.Next(0, 9);
-    //        card.Password = GeneratePassword();
-    //        card.RowNo = i;
-
-    //        list.Add(card);
-    //    }
-    //    return list;
-    //}
     private async Task<List<CardDto>> GenerateCardsList(int cardOrderId, string companyCode, int tedad)
     {
         List<CardDto> list = new List<CardDto>();
@@ -145,19 +89,6 @@ public class CardsManagementService : MyServicesBase
         }
         return list;
     }
-    //private string GeneratePassword()
-    //{
-    //    var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz!@#$%*";//l ال را حذف کردم
-    //    var digits = "0123456789";
-    //    var result = new string(
-    //    Enumerable.Repeat(chars, 3)
-    //              .Select(s => s[rnd.Next(s.Length)])
-    //              .ToArray());
-    //    result += new string(Enumerable.Repeat(digits, 2)
-    //              .Select(s => s[rnd.Next(s.Length)])
-    //              .ToArray());
-    //    return result;
-    //}
     private string GeneratePassword()
     {
         var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz!@#$%*";//l ال را حذف کردم
@@ -180,35 +111,6 @@ public class CardsManagementService : MyServicesBase
         return sb.ToString();
     }
 
-
-    //private string Format(int seialNo)
-    // {
-    //1:
-    //var serialNo = seialNo.ToString();
-    //int length = serialNo.Length;
-    //switch (length)
-    //{
-    //    case 7:
-    //        return serialNo;
-    //    case 6:
-    //        return "0" + serialNo;
-    //    case 5:
-    //        return "00" + serialNo;
-    //    case 4:
-    //        return "000" + serialNo;
-    //    case 3:
-    //        return "0000" + serialNo;
-    //    case 2:
-    //        return "00000" + serialNo;
-    //    case 1:
-    //        return "000000" + serialNo;
-    //}
-    //return serialNo;
-
-    //2:
-    //return seialNo.ToString("D7");
-
-    //}
 
     public async Task<OperationResultDto> CancelCardOrder(CardOrder cardOrder)
     {
@@ -490,7 +392,6 @@ public class CardsManagementService : MyServicesBase
                 return Fail($"کارت شماره {card.CardNo} غیر فعال می باشد.", "IsActive");
             }
 
-            //var cardOrder = await _cardsManagementRepo.GetCardOrderAsync(card.CardOrderId);
             if (!card.CardOrder.IsActive)
             {
                 return Fail($"کارت شماره {card.CardNo} جزء سفارش کارت شماره{card.CardOrder.Id} می باشد که غیرفعال است.", "IsActive");
@@ -548,14 +449,12 @@ public class CardsManagementService : MyServicesBase
             await _cardsManagementRepo.SaveChangesAsync();
             result.Success = true;
             result.Message = $"اعتبار کارت شماره {card.CardNo} با موفقیت افزایش  یافت.";
-
         }
         catch (Exception ex)
         {
             return Fail($"حطا رخ داد \n {ex.Message}");
         }
         return result;
-
     }
     public async Task<OperationResultDto> DecreaseCardCredit(int cardId, decimal amount, string? Description, bool? isAdmin, int? currentCompanyId, int? currentUserId)
     {
@@ -602,228 +501,13 @@ public class CardsManagementService : MyServicesBase
 
     public async Task<MemoryStream> GetCardsExcel(int cardOrderId, string? cardNo)
     {
-        //Data:
-        CardOrder cardOrder = await GetCardOrderAsync(cardOrderId, CardNo: "");
-
-        ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-        MemoryStream memoryStream = new MemoryStream();
-        //header:
-        using (ExcelPackage excelPackage = new ExcelPackage(memoryStream))
-        {
-            ExcelWorksheet workSheet = excelPackage.Workbook.Worksheets.Add("CardsSheet");
-            FillCardOrderData(workSheet, cardOrder);
-
-
-
-            workSheet.Cells["A8"].Value = "ردیف";
-            workSheet.Cells["B8"].Value = "شماره کارت";
-            workSheet.Cells["C8"].Value = "سریال";
-            workSheet.Cells["D8"].Value = "فعال";
-            workSheet.Cells["E8"].Value = "مبلغ اولیه ";
-            workSheet.Cells["F8"].Value = "موجودی";
-            workSheet.Cells["G8"].Value = "پسورد";
-            workSheet.Cells["H8"].Value = "مالک";
-            workSheet.Cells["I8"].Value = "دارای تاریخ انقضا";
-            //workSheet.Cells["H1"].Value = "وضعیت"; 
-            //workSheet.Cells["H1"].Value = "نوع کارت"; 
-            //workSheet.Cells["H1"].Value = "فعال";//√ مربع تیکدار T/F
-
-            using (ExcelRange headerCells = workSheet.Cells["A8:I8"])
-            {
-                headerCells.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                headerCells.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightGray);
-                headerCells.Style.Font.Bold = true;
-            }
-
-            int row = 9;
-            int rowsCount = 1;
-            //Data:
-
-            var cards = await CardOrderDetailsSearch(cardOrderId, cardNo);
-            foreach (var card in cards)
-            {
-                workSheet.Cells[row, 1].Value = rowsCount++;
-                workSheet.Cells[row, 2].Value = card.CardNo;
-                workSheet.Cells[row, 3].Value = card.SerialNo;
-                workSheet.Cells[row, 4].Value = card.IsActive == true ? "بله" : "خیر";
-                //if (card.IsActive == false)
-                //{
-                //    workSheet.Cells[row, 4].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                //    workSheet.Cells[row, 4].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.Gray);
-                //    workSheet.Cells[row, 4].Style.Font.Bold = true;
-
-                //}
-                workSheet.Cells[row, 5].Value = card.Amount;
-                workSheet.Cells[row, 6].Value = card.RemainedAmount;
-                workSheet.Cells[row, 7].Value = card.Password;
-                workSheet.Cells[row, 8].Value = "  " + card.Owner?.FullName + "  " + card.Owner?.Mobile + "  ";
-                workSheet.Cells[row, 9].Value = string.IsNullOrWhiteSpace(card.ExpireDateFa) ? "" : card.ExpireDateFa;
-
-                if (!card.IsActive || card.IsExpired)////Cells["A2:B2"] از Cells[row, 1, row, 8]
-                {
-                    // انتخاب کل سطر از ستون A تا H (یا هر ستونی که داده دارید)
-                    // فرض می‌کنیم داده‌ها تا ستون 8 (H) هستند. اگر ستون‌های بیشتری دارید، عدد 8 را تغییر دهید.
-                    using (var range = workSheet.Cells[row, 1, row, 9])
-                    {
-                        range.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                        range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.Gray);
-                        range.Style.Font.Bold = true;
-                        //range.Style.Font.Color.SetColor(System.Drawing.Color.Black); // یا White اگر پس‌زمینه تیره است
-                    }
-                }
-                row++;
-            }
-
-            workSheet.Cells[$"A1:I{row}"].AutoFitColumns();
-
-            await excelPackage.SaveAsync();
-        }
-        memoryStream.Position = 0;
-        return memoryStream;
-    }
-
-    private void FillCardOrderData(ExcelWorksheet workSheet, CardOrder cardOrder)
-    {
-        workSheet.Cells["A1"].Value = "شماره سفارش کارت";
-        workSheet.Cells["B1"].Value = cardOrder.Id;
-        workSheet.Cells["C1"].Value = "وضعیت";
-        {
-            workSheet.Cells["C1"].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-            workSheet.Cells["C1"].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightGray);
-            workSheet.Cells["C1"].Style.Font.Bold = true;
-        }
-        workSheet.Cells["D1"].Value = cardOrder.StatusTitle;
-        workSheet.Cells["A2"].Value = "فعال";
-        workSheet.Cells["B2"].Value = cardOrder.IsActive == true ? "بله" : "نه خیر";
-        //if (cardOrder.IsActive == false)
-        //{
-        //    workSheet.Cells["B2"].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-        //    workSheet.Cells["B2"].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.Gray);
-        //    workSheet.Cells["B2"].Style.Font.Bold = true;
-
-        //}
-
-        workSheet.Cells["A3"].Value = "تعداد";
-        workSheet.Cells["B3"].Value = cardOrder.Tedad;
-        workSheet.Cells["A4"].Value = "شرکت";
-        workSheet.Cells["B4"].Value = $"{cardOrder.Company.CompanyName}-{cardOrder.Company.CompanyCode}";
-        workSheet.Cells["A5"].Value = "سازمان";
-        workSheet.Cells["B5"].Value = cardOrder.Organization?.OrganizationName;
-        workSheet.Cells["A6"].Value = "توضیحات";
-        workSheet.Cells["B6"].Value = cardOrder.Description;
-
-        using (ExcelRange headerCells = workSheet.Cells["A1:A7"])
-        {
-            headerCells.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-            headerCells.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightGray);
-            headerCells.Style.Font.Bold = true;
-
-        }
-        if (!cardOrder.IsActive)
-        {
-            using (var range = workSheet.Cells["A2:B2"])
-            {
-                range.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.Gray);
-                range.Style.Font.Bold = true;
-                //range.Style.Font.Color.SetColor(System.Drawing.Color.White); // خوانایی بهتر
-            }
-        }
-    }
-
+        return await _cardsManagementRepo.GetCardsExcel(cardOrderId, cardNo);
+       
+    }  
     public async Task<MemoryStream> GetCardsCsv(int cardOrderId, string? cardNo)
     {
-        //var sb = new StringBuilder();
-
-        //// هدر
-        //sb.AppendLine("نام,نام خانوادگی,سن");
-
-        //// داده‌ها
-        //sb.AppendLine("مهران,صرافی,41");
-        //sb.AppendLine("محمد,زاکانی,21");
-
-        //var bytes = Encoding.UTF8.GetBytes(sb.ToString());
-
-        //return File(bytes, "text/csv", "report.csv");
-
-        /////////////////////////2:
-        //var sb = new StringBuilder();
-
-        // هدر ستون‌ها (یکی یکی)
-        //sb.Append("نام");
-        //sb.Append(",");
-        //sb.Append("نام خانوادگی");
-        //sb.Append(",");
-        //sb.AppendLine("سن");
-
-        //// داده‌ها
-        //sb.Append("مهران");
-        //sb.Append(",");
-        //sb.Append("صرافی");
-        //sb.Append(",");
-        //sb.AppendLine("41");
-
-        //sb.Append("محمد");
-        //sb.Append(",");
-        //sb.Append("زاکانی");
-        //sb.Append(",");
-        //sb.AppendLine("21");
-
-        //var memoryStream = new MemoryStream();
-        //var bytes = Encoding.UTF8.GetBytes(sb.ToString());
-        //memoryStream.Write(bytes, 0, bytes.Length);
-        //memoryStream.Position = 0;
-
-        //return memoryStream;
-        //return File(memoryStream, "text/csv", "report.csv");
-
-        //هدرها:
-        var sb = new StringBuilder();
-        sb.Append("شماره کارت");
-        sb.Append(",");
-        sb.Append("سریال");
-        sb.Append(",");
-        sb.Append("مبلغ اولیه");
-        sb.Append(",");
-        sb.Append("موجودی  ");
-        sb.Append(",");
-        sb.Append("پسورد  ");
-        sb.Append(",");
-        sb.AppendLine("شماره سفارش کارت");
-
-        //دیتا: 
-
-        var cards = await CardOrderDetailsSearch(cardOrderId, cardNo);
-        foreach (var card in cards)
-        {
-            //sb.Append(card.CardNo.ToString("D16") + ",");
-            sb.Append(card.CardNo.ToString().PadLeft(16, '0'));
-            sb.Append(",");
-            sb.Append(card.SerialNo);
-            sb.Append(",");
-            sb.Append(card.Amount);
-            sb.Append(",");
-            sb.Append(card.RemainedAmount);
-            sb.Append(",");
-            sb.Append(card.Password);
-            sb.Append(",");
-            sb.AppendLine(card.CardOrderId.ToString());
-        }
-
-        var memoryStream = new MemoryStream();
-
-        // اضافه کردن BOM برای UTF-8 (جلوگیری از RTL شدن)
-        var utf8Bom = new byte[] { 0xEF, 0xBB, 0xBF };
-        memoryStream.Write(utf8Bom, 0, utf8Bom.Length);
-
-        var bytes = Encoding.UTF8.GetBytes(sb.ToString());
-        memoryStream.Write(bytes, 0, bytes.Length);
-        memoryStream.Position = 0;
-
-        return memoryStream;
-
+        return await _cardsManagementRepo.GetCardsCsv( cardOrderId, cardNo);        
     }
-
     public async Task<OperationResultDto> DisableCardOrder(int cardOrderId)
     {
         var result = new OperationResultDto();

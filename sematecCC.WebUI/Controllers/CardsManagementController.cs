@@ -326,7 +326,6 @@ public class CardsManagementController : MyControllersBase
     public async Task<IActionResult> DisableCardOrder(int cardOrderId)
     {
         var result = await _cardsManagerService.DisableCardOrder(cardOrderId);
-        //TempData["Message"] = result.Message;
         if (result.Success)
         {
             TempData["SuccessMessage"] = result.Message;
@@ -336,9 +335,7 @@ public class CardsManagementController : MyControllersBase
             TempData["ErrorMessage"] = result.Message;
         }
 
-
         return RedirectToAction(nameof(CardOrderIndex));
-
     }
     public async Task<IActionResult> EnableCardOrder(int cardOrderId)
     {
@@ -375,8 +372,6 @@ public class CardsManagementController : MyControllersBase
         result = await _cardsManagerService.DecreaseCardCredit(Credit.CardId, Credit.Amount, Credit.Description, isAdmin, currentUserCompanyId, currentUserId);
         return Json(result);
     }
-
-
 
     [Authorize]
     public async Task<IActionResult> CardsList()

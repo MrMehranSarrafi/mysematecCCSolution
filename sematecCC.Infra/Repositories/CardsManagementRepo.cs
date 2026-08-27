@@ -1,13 +1,15 @@
-﻿using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using System.Data;
+﻿using Application.DTO;
 using Core.Domain.Entities;
 using Core.Domain.RepositoryContracts;
-using Application.DTO;
 using Domain.Enums;
 using Domain.Helpers;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using OfficeOpenXml;
 using Persistence.DbContexts;
+using System.Data;
+using System.Text;
 
 namespace SematecCC.Infra;
 
@@ -627,8 +629,6 @@ public class CardsManagementRepo : ICardsManagementRepo
             .FirstOrDefaultAsync(c => c.CardNo == cardNumber && c.Password == password);
     }
 
-    
-
     public async Task<decimal> GetRemainedAmount(int cardId)
     {
         var cardTransaction=await _db.CardTransactions.AsNoTracking().Where(ct => ct.CardId == cardId).AsNoTracking().OrderByDescending(ct => ct.Id)
@@ -729,6 +729,199 @@ public class CardsManagementRepo : ICardsManagementRepo
         // as ExecuteUpdateAsync commits implicitly if no exception is thrown within its scope in some EF Core versions,
         // or it can be considered part of the transactionally managed operation.
         // However, explicitly managing the transaction with Begin/Commit/Rollback is more robust.
+    }
+
+    public async Task<MemoryStream> GetCardsExcel(int cardOrderId, string? cardNo)
+    {
+        //Data:
+        CardOrder cardOrder = await GetCardOrderAsync(cardOrderId, CardNo: "");
+
+        ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+        MemoryStream memoryStream = new MemoryStream();
+        //header:
+        using (ExcelPackage excelPackage = new ExcelPackage(memoryStream))
+        {
+            ExcelWorksheet workSheet = excelPackage.Workbook.Worksheets.Add("CardsSheet");
+            FillCardOrderData(workSheet, cardOrder);
+
+            workSheet.Cells["A8"].Value = "ردیف";
+            workSheet.Cells["B8"].Value = "شماره کارت";
+            workSheet.Cells["C8"].Value = "سریال";
+            workSheet.Cells["D8"].Value = "فعال";
+            workSheet.Cells["E8"].Value = "مبلغ اولیه ";
+            workSheet.Cells["F8"].Value = "موجودی";
+            workSheet.Cells["G8"].Value = "پسورد";
+            workSheet.Cells["H8"].Value = "مالک";
+            workSheet.Cells["I8"].Value = "دارای تاریخ انقضا";
+            //workSheet.Cells["H1"].Value = "وضعیت"; 
+            //workSheet.Cells["H1"].Value = "نوع کارت"; 
+            //workSheet.Cells["H1"].Value = "فعال";//√ مربع تیکدار T/F
+
+            using (ExcelRange headerCells = workSheet.Cells["A8:I8"])
+            {
+                headerCells.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                headerCells.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightGray);
+                headerCells.Style.Font.Bold = true;
+            }
+
+            int row = 9;
+            int rowsCount = 1;
+            //Data:
+
+            var cards = await CardOrderDetailsSearch(cardOrderId, cardNo);
+            foreach (var card in cards)
+            {
+                workSheet.Cells[row, 1].Value = rowsCount++;
+                workSheet.Cells[row, 2].Value = card.CardNo;
+                workSheet.Cells[row, 3].Value = card.SerialNo;
+                workSheet.Cells[row, 4].Value = card.IsActive == true ? "بله" : "خیر";
+                //if (card.IsActive == false)
+                //{
+                //    workSheet.Cells[row, 4].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                //    workSheet.Cells[row, 4].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.Gray);
+                //    workSheet.Cells[row, 4].Style.Font.Bold = true;
+
+                //}
+                workSheet.Cells[row, 5].Value = card.Amount;
+                workSheet.Cells[row, 6].Value = card.RemainedAmount;
+                workSheet.Cells[row, 7].Value = card.Password;
+                workSheet.Cells[row, 8].Value = "  " + card.Owner?.FullName + "  " + card.Owner?.Mobile + "  ";
+                workSheet.Cells[row, 9].Value = string.IsNullOrWhiteSpace(card.ExpireDateFa) ? "" : card.ExpireDateFa;
+
+                if (!card.IsActive || card.IsExpired)////Cells["A2:B2"] از Cells[row, 1, row, 8]
+                {
+                    // انتخاب کل سطر از ستون A تا H (یا هر ستونی که داده دارید)
+                    // فرض می‌کنیم داده‌ها تا ستون 8 (H) هستند. اگر ستون‌های بیشتری دارید، عدد 8 را تغییر دهید.
+                    using (var range = workSheet.Cells[row, 1, row, 9])
+                    {
+                        range.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                        range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.Gray);
+                        range.Style.Font.Bold = true;
+                        //range.Style.Font.Color.SetColor(System.Drawing.Color.Black); // یا White اگر پس‌زمینه تیره است
+                    }
+                }
+                row++;
+            }
+
+            workSheet.Cells[$"A1:I{row}"].AutoFitColumns();
+
+            await excelPackage.SaveAsync();
+        }
+        memoryStream.Position = 0;
+        return memoryStream;
+    }
+
+    private void FillCardOrderData(ExcelWorksheet workSheet, CardOrder cardOrder)
+    {
+        workSheet.Cells["A1"].Value = "شماره سفارش کارت";
+        workSheet.Cells["B1"].Value = cardOrder.Id;
+        workSheet.Cells["C1"].Value = "وضعیت";
+        {
+            workSheet.Cells["C1"].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+            workSheet.Cells["C1"].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightGray);
+            workSheet.Cells["C1"].Style.Font.Bold = true;
+        }
+        workSheet.Cells["D1"].Value = cardOrder.StatusTitle;
+        workSheet.Cells["A2"].Value = "فعال";
+        workSheet.Cells["B2"].Value = cardOrder.IsActive == true ? "بله" : "نه خیر";
+        //if (cardOrder.IsActive == false)
+        //{
+        //    workSheet.Cells["B2"].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+        //    workSheet.Cells["B2"].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.Gray);
+        //    workSheet.Cells["B2"].Style.Font.Bold = true;
+
+        //}
+
+        workSheet.Cells["A3"].Value = "تعداد";
+        workSheet.Cells["B3"].Value = cardOrder.Tedad;
+        workSheet.Cells["A4"].Value = "شرکت";
+        workSheet.Cells["B4"].Value = $"{cardOrder.Company.CompanyName}-{cardOrder.Company.CompanyCode}";
+        workSheet.Cells["A5"].Value = "سازمان";
+        workSheet.Cells["B5"].Value = cardOrder.Organization?.OrganizationName;
+        workSheet.Cells["A6"].Value = "توضیحات";
+        workSheet.Cells["B6"].Value = cardOrder.Description;
+
+        using (ExcelRange headerCells = workSheet.Cells["A1:A7"])
+        {
+            headerCells.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+            headerCells.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightGray);
+            headerCells.Style.Font.Bold = true;
+
+        }
+        if (!cardOrder.IsActive)
+        {
+            using (var range = workSheet.Cells["A2:B2"])
+            {
+                range.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.Gray);
+                range.Style.Font.Bold = true;
+                //range.Style.Font.Color.SetColor(System.Drawing.Color.White); // خوانایی بهتر
+            }
+        }
+    }
+
+    public async Task<MemoryStream> GetCardsCsv(int cardOrderId, string? cardNo)
+    {
+        var sb = new StringBuilder();
+
+        // Header
+        sb.AppendLine("شماره کارت,سریال,مبلغ اولیه,موجودی,پسورد,شماره سفارش کارت");
+
+        // Data
+        var cards = await CardOrderDetailsSearch(cardOrderId, cardNo);
+
+        foreach (var card in cards)
+        {
+            sb.Append(EscapeCsv(card.CardNo.ToString().PadLeft(16, '0')));
+            sb.Append(",");
+
+            sb.Append(EscapeCsv(card.SerialNo));
+            sb.Append(",");
+
+            sb.Append(EscapeCsv(card.Amount.ToString()));
+            sb.Append(",");
+
+            sb.Append(EscapeCsv(card.RemainedAmount.ToString()));
+            sb.Append(",");
+
+            sb.Append(EscapeCsv(card.Password));
+            sb.Append(",");
+
+            sb.AppendLine(EscapeCsv(card.CardOrderId.ToString()));
+        }
+
+        var memoryStream = new MemoryStream();
+
+        // UTF-8 BOM برای نمایش صحیح فارسی در Excel
+        await memoryStream.WriteAsync(new byte[]
+        {
+        0xEF, 0xBB, 0xBF
+        });
+
+        var bytes = Encoding.UTF8.GetBytes(sb.ToString());
+
+        await memoryStream.WriteAsync(bytes);
+
+        memoryStream.Position = 0;
+
+        return memoryStream;
+    }
+
+    private static string EscapeCsv(string? value)
+    {
+        if (string.IsNullOrEmpty(value))
+            return "";
+
+        // اگر مقدار شامل comma، quote یا newline باشد
+        if (value.Contains(',') ||
+            value.Contains('"') ||
+            value.Contains('\r') ||
+            value.Contains('\n'))
+        {
+            return $"\"{value.Replace("\"", "\"\"")}\"";
+        }
+
+        return value;
     }
 
 }
