@@ -1,47 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-	  <RootNamespace> SematecCC.WebUI</RootNamespace>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <Content Remove="Lib\Jwt\net8.0\any\dotnet-user-jwts.deps.json" />
-    <Content Remove="Lib\Jwt\net8.0\any\dotnet-user-jwts.runtimeconfig.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.24" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.24">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.24" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\SematecCC.Core\sematecCC.Core.csproj" />
-    <ProjectReference Include="..\SematecCC.Infra\sematecCC.Infra.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\assets\css\jstree\" />
-    <Folder Include="wwwroot\assets\css\fontawesome\" />
-    <Folder Include="wwwroot\images\icons\" />
-  </ItemGroup>
-<ItemGroup>
-		<Reference Include="Authentication.JwtBearer">
-			<HintPath>Lib\Jwt\netcore6\Microsoft.AspNetCore.Authentication.JwtBearer.dll</HintPath>
-		</Reference>
-		<None Include="Lib\Jwt\netcore6\Microsoft.AspNetCore.Authentication.JwtBearer.dll">
-			<CopyToOutputDirectory>JwtBearer</CopyToOutputDirectory>
-		</None>
-	</ItemGroup>	
-  <ItemGroup>
-    <None Include="Lib\Jwt\net8.0\any\dotnet-user-jwts.deps.json" />
-    <None Include="Lib\Jwt\net8.0\any\dotnet-user-jwts.runtimeconfig.json" />
-  </ItemGroup>
-
+	
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<RootNamespace>SematecCC.WebUI</RootNamespace>
+	</PropertyGroup>
+	
+	<ItemGroup>
+		<ProjectReference Include="..\SematecCC.Core\sematecCC.Core.csproj" />
+		<ProjectReference Include="..\SematecCC.Infra\sematecCC.Infra.csproj" />
+	</ItemGroup>
+	
+	<ItemGroup>
+		<Folder Include="wwwroot\assets\css\jstree\" />
+		<Folder Include="wwwroot\assets\css\fontawesome\" />
+		<Folder Include="wwwroot\images\icons\" />
+	</ItemGroup>
 </Project>

@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Core.Domain.Entities;
+using Domain.Enums;
+using Identity.IdentityEntities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Core.Domain.Entities;
-using Domain.Enums;
-using SematecCC.Infra;
 
 namespace Persistence.DbContexts;
 

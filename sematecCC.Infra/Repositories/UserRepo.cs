@@ -8,6 +8,7 @@ using Application.DTO.Permissions;
 using Application.DTO.UserDtos;
 using Domain.Enums;
 using Persistence.DbContexts;
+using Identity.IdentityEntities;
 
 namespace SematecCC.Infra;
 
