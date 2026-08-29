@@ -46,7 +46,7 @@ public static class ConfigureLayer
 
         services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
         {
-            //options.SignIn.RequireConfirmedAccount = true;//نیاز به تایید ایمیل
+            //options.SignIn.RequireConfirmedAccount = true;//if set, email verification needed
             options.Password.RequireDigit = true;//
             options.Password.RequiredLength = 6;
             options.Password.RequireNonAlphanumeric = false;
@@ -55,7 +55,7 @@ public static class ConfigureLayer
         })
             .AddEntityFrameworkStores<SematecCCDbContext>()
             .AddDefaultTokenProviders()//To verify emails and phone numbers and .. 
-            .AddErrorDescriber<PersianIdentityErrorDescriber>();// ← اضافه کردن پیام‌های فارسی
+            .AddErrorDescriber<PersianIdentityErrorDescriber>();// for adding farsi messages
 
 
 
@@ -84,7 +84,7 @@ public static class ConfigureLayer
             })
             .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
             {
-                // تنظیمات JWT...
+                //JWT settings...
                 // --- THEN Add JWT Bearer Authentication ---
                 // This will be used for API calls or specific scenarios that require JWT:
                 options.TokenValidationParameters = new TokenValidationParameters

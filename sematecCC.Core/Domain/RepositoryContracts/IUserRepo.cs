@@ -1,8 +1,6 @@
 ﻿using Application.DTO.Permissions;
 using Application.DTO.UserDtos;
 using Core.Domain.Entities;
-using System.ComponentModel;
-using System.ComponentModel.Design;
 
 namespace Core.Domain.RepositoryContracts;
 

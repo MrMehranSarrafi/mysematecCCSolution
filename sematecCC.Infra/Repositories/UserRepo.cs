@@ -1,14 +1,14 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using System.Data;
-using System.Security.Claims;
+﻿using Application.DTO.Permissions;
+using Application.DTO.UserDtos;
 using Core.Domain.Entities;
 using Core.Domain.RepositoryContracts;
-using Application.DTO.Permissions;
-using Application.DTO.UserDtos;
 using Domain.Enums;
-using Persistence.DbContexts;
 using Identity.IdentityEntities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Persistence.DbContexts;
+using System.Data;
+using System.Security.Claims;
 
 namespace SematecCC.Infra;
 

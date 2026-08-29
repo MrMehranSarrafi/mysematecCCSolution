@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Domain.Services;
+﻿using Domain.Services;
+using Microsoft.AspNetCore.Mvc;
 namespace SematecCC.WebUI.ViewComponents;
 
 public class NavigationViewComponent: ViewComponent

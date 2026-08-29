@@ -32,11 +32,11 @@ app.UseAuthorization();
 
 
 // If you have API controllers that don't use the default routing, you might need this:
-app.MapControllers();//ترتیب مهمه . enables attribute routing. But ruins conventional routing
+app.MapControllers();// Order is very important   . enables attribute routing. But ruins conventional routing
 //XOR:
 //app.UseEndpoints(endpoints =>
 //{
-//    endpoints.MapControllers(); //  این خط ضروری است برای attribute routing
+//    endpoints.MapControllers(); //essential for attribute routing
 //});
 
 app.MapControllerRoute(

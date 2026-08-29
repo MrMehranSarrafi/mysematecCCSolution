@@ -1,5 +1,4 @@
 ﻿using Core.Domain.Entities;
-using System.ComponentModel.Design;
 
 namespace Core.Domain.RepositoryContracts;
 

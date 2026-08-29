@@ -1,11 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Application.DTO.ApiDTOs;
+using Application.DTO.ApiDTOs.Responses;
+using Application.DTO.UserDtos;
 using Core.Domain.Entities;
 using Core.Domain.RepositoryContracts;
-using Application.DTO.ApiDTOs;
-using Application.DTO.UserDtos;
-using Application.DTO.ApiDTOs.Responses;
 using Domain.Enums;
 using Domain.Helpers;
+using Microsoft.EntityFrameworkCore;
 using Persistence.DbContexts;
 
 namespace SematecCC.Infra;

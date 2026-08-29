@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Application.DTO;
+﻿using Application.DTO;
 using Domain.Enums;
 using Domain.ServiceContracts;
 using Domain.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace SematecCC.WebUI.Controllers;
 
